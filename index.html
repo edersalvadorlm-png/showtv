@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SHOW TV</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0f0f0f;
+    color: white;
+}
+
+header {
+    background-color: #111;
+    padding: 15px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: orange;
+}
+
+.container {
+    display: flex;
+    height: calc(100vh - 60px);
+}
+
+.channel-list {
+    width: 30%;
+    background-color: #1a1a1a;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.channel {
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: #222;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.channel:hover {
+    background-color: orange;
+    color: black;
+}
+
+.player {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+
+video {
+    width: 95%;
+    height: 95%;
+    background: black;
+}
+</style>
+</head>
+
+<body>
+
+<header>SHOW TV</header>
+
+<div class="container">
+    <div class="channel-list" id="channelList">
+        Cargando canales...
+    </div>
+
+    <div class="player">
+        <video id="video" controls autoplay></video>
+    </div>
+</div>
+
+<script>
+const m3uUrl = "https://raw.githubusercontent.com/edersalvadorlm-png/showtv/main/showtv.m3u";
+
+fetch(m3uUrl)
+.then(response => response.text())
+.then(data => {
+    const lines = data.split("\n");
+    const list = document.getElementById("channelList");
+    list.innerHTML = "";
+
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i].startsWith("#EXTINF")) {
+            const name = lines[i].split(",")[1];
+            const url = lines[i+1];
+
+            const channel = document.createElement("div");
+            channel.className = "channel";
+            channel.textContent = name;
+
+            channel.onclick = () => playStream(url);
+
+            list.appendChild(channel);
+        }
+    }
+});
+
+function playStream(url) {
+    const video = document.getElementById("video");
+
+    if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(video);
+    } else {
+        video.src = url;
+    }
+}
+</script>
+
+</body>
+</html>
