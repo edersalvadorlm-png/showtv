@@ -1,54 +1,54 @@
-
 #EXTM3U
 
-# =========================
-# ESPAÑA
-# =========================
-#EXTINF:-1,La 1 RTVE
-https://rtvelivestream.akamaized.net/rtvesec/la1/la1_main.m3u8
-#EXTINF:-1,Teledeporte RTVE
-https://rtvelivestream.akamaized.net/rtvesec/tdp/tdp_main.m3u8
-#EXTINF:-1,24h RTVE
-https://rtvelivestream.akamaized.net/rtvesec/24h/24h_main.m3u8
+##########################
+# 🌎 Lista global de canales públicos
+# Esta lista proviene de iptv-org (miles de canales públicos)
+# Incluye canales por país y lenguaje
+# (tu app los mostrará en la lista)
+##########################
+#EXTINF:-1,Global IPTV - All public channels
+https://iptv-org.github.io/iptv/index.m3u
 
-# =========================
-# MÉXICO
-# =========================
-#EXTINF:-1,Canal Once
-https://canalonce.streamlink.mx/live.m3u8
-#EXTINF:-1,Imagen Televisión (Web oficial)
-https://imagenstreaming.mx/live.m3u8
+##########################
+# 🇪🇸 ESPAÑA - Publicos y Abiertos
+##########################
+#EXTINF:-1,España - Todos
+https://iptv-org.github.io/iptv/countries/es.m3u
 
-# =========================
-# CHILE
-# =========================
-#EXTINF:-1,T13 En Vivo
-https://t13live-stream.cl/live.m3u8
-#EXTINF:-1,TVN Chile
-https://tvnchile.stream/live.m3u8
+##########################
+# 🇲🇽 MÉXICO - Publicos y Abiertos
+##########################
+#EXTINF:-1,México - Todos
+https://iptv-org.github.io/iptv/countries/mx.m3u
 
-# =========================
-# ARGENTINA
-# =========================
-#EXTINF:-1,Televisión Pública Argentina
-https://tvpublica.stream/live.m3u8
-#EXTINF:-1,Canal Encuentro
-https://encuentro.stream/live.m3u8
+##########################
+# 🇨🇱 CHILE - Publicos y Abiertos
+##########################
+#EXTINF:-1,Chile - Todos
+https://iptv-org.github.io/iptv/countries/cl.m3u
 
-# =========================
-# INTERNACIONAL EN ESPAÑOL
-# =========================
+##########################
+# 🇦🇷 ARGENTINA - Publicos y Abiertos
+##########################
+#EXTINF:-1,Argentina - Todos
+https://iptv-org.github.io/iptv/countries/ar.m3u
+
+##########################
+# 🗣️ Español - Todas las listadas por idioma
+##########################
+#EXTINF:-1,Idioma Español
+https://iptv-org.github.io/iptv/languages/spa.m3u
+
+##########################
+# 📰 Noticias Internacionales
+##########################
 #EXTINF:-1,France 24 Español
 https://static.france24.com/live/F24_ES_HI_HLS/live_web.m3u8
 #EXTINF:-1,DW Español
 https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/index.m3u8
 
-# =========================
-# FAST CHANNELS LEGALES
-# =========================
-#EXTINF:-1,Pluto TV Cine Español
-https://plutotv-cine.stream/live.m3u8
-#EXTINF:-1,Pluto TV Series Español
-https://plutotv-series.stream/live.m3u8
-#EXTINF:-1,Pluto TV Deportes Español
-https://plutotv-sports.stream/live.m3u8
+##########################
+# 🎬 FAST & Gratis (Pluto TV & similares)
+##########################
+#EXTINF:-1,Pluto TV (canales públicos vía iptv-org)
+https://iptv-org.github.io/iptv/streams/1498.m3u8
