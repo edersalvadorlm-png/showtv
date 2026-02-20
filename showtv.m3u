@@ -1,94 +1,54 @@
+
 #EXTM3U
 
-################################################
-# 🇺🇸 ESTADOS UNIDOS
-################################################
-
-#EXTINF:-1 group-title="USA - Noticias",CBS News
-https://cbsn-us.cbsnstream.cbsnews.com/out/v1/master.m3u8
-
-#EXTINF:-1 group-title="USA - Noticias",NBC News Now
-https://nbcnewshls.akamaized.net/hls/live/2037095/nbcnews/master.m3u8
-
-#EXTINF:-1 group-title="USA - Noticias",ABC News Live
-https://abcnews-streams.akamaized.net/hls/live/2023560/abcnews/master.m3u8
-
-#EXTINF:-1 group-title="USA - Deportes",Stadium
-https://stadiumlivein-a.akamaihd.net/hls/live/522512/stadium/master.m3u8
-
-#EXTINF:-1 group-title="USA - Deportes",Red Bull TV
-https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8
-
-################################################
-# 🇲🇽 MÉXICO
-################################################
-
-#EXTINF:-1 group-title="Mexico - Noticias",Milenio TV
-https://mdstrm.com/live-stream-playlist/5c3a8c8e7a9d8e3a8c8e7a9d.m3u8
-
-#EXTINF:-1 group-title="Mexico - Público",Canal 14
-https://canal14-live.akamaized.net/hls/live/2037081/canal14/master.m3u8
-
-#EXTINF:-1 group-title="Mexico - Público",Canal Once
-https://onceiptv-lh.akamaihd.net/i/once_1@195312/master.m3u8
-
-################################################
-# 🇪🇸 ESPAÑA
-################################################
-
-#EXTINF:-1 group-title="España - General",La 1 RTVE
+# =========================
+# ESPAÑA
+# =========================
+#EXTINF:-1,La 1 RTVE
 https://rtvelivestream.akamaized.net/rtvesec/la1/la1_main.m3u8
-
-#EXTINF:-1 group-title="España - Deportes",Teledeporte
+#EXTINF:-1,Teledeporte RTVE
 https://rtvelivestream.akamaized.net/rtvesec/tdp/tdp_main.m3u8
-
-#EXTINF:-1 group-title="España - Noticias",24h RTVE
+#EXTINF:-1,24h RTVE
 https://rtvelivestream.akamaized.net/rtvesec/24h/24h_main.m3u8
 
-################################################
-# 🇮🇹 ITALIA
-################################################
+# =========================
+# MÉXICO
+# =========================
+#EXTINF:-1,Canal Once
+https://canalonce.streamlink.mx/live.m3u8
+#EXTINF:-1,Imagen Televisión (Web oficial)
+https://imagenstreaming.mx/live.m3u8
 
-#EXTINF:-1 group-title="Italia - Noticias",Rai News 24
-https://rainews-live.akamaized.net/hls/live/598599/rainews/master.m3u8
+# =========================
+# CHILE
+# =========================
+#EXTINF:-1,T13 En Vivo
+https://t13live-stream.cl/live.m3u8
+#EXTINF:-1,TVN Chile
+https://tvnchile.stream/live.m3u8
 
-################################################
-# 🇫🇷 FRANCIA
-################################################
+# =========================
+# ARGENTINA
+# =========================
+#EXTINF:-1,Televisión Pública Argentina
+https://tvpublica.stream/live.m3u8
+#EXTINF:-1,Canal Encuentro
+https://encuentro.stream/live.m3u8
 
-#EXTINF:-1 group-title="Francia - Noticias",France 24 English
-https://static.france24.com/live/F24_EN_HI_HLS/live_web.m3u8
-
-################################################
-# 🇬🇧 REINO UNIDO
-################################################
-
-#EXTINF:-1 group-title="UK - Noticias",Sky News
-https://skynews-live.akamaized.net/hls/live/2037093/skynews/master.m3u8
-
-################################################
-# 🇩🇪 ALEMANIA
-################################################
-
-#EXTINF:-1 group-title="Alemania - Público",DW English
+# =========================
+# INTERNACIONAL EN ESPAÑOL
+# =========================
+#EXTINF:-1,France 24 Español
+https://static.france24.com/live/F24_ES_HI_HLS/live_web.m3u8
+#EXTINF:-1,DW Español
 https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/index.m3u8
 
-################################################
-# 🌍 INTERNACIONAL - DEPORTES Y EVENTOS
-################################################
-
-#EXTINF:-1 group-title="Internacional - Deportes",FIFA+
-https://fp.svcs.fifa.com/live/playlist.m3u8
-
-#EXTINF:-1 group-title="Internacional - Deportes",Olympic Channel
-https://olympic.streams.akamaized.net/hls/live/2037097/oly/master.m3u8
-
-################################################
-# 🎬 FAST CHANNELS GRATUITOS
-################################################
-
-#EXTINF:-1 group-title="FAST - Películas",Pluto TV Movies
-https://service-stitcher.clusters.pluto.tv/stitch/hls/channel/5ca673e0d0bd6c2689b8a6c5/master.m3u8
-
-#EXTINF:-1 group-title="FAST - Series",Pluto TV Series
-https://service-stitcher.clusters.pluto.tv/stitch/hls/channel/5ca6748f0d0bd6c2689b8a6c8/master.m3u8
+# =========================
+# FAST CHANNELS LEGALES
+# =========================
+#EXTINF:-1,Pluto TV Cine Español
+https://plutotv-cine.stream/live.m3u8
+#EXTINF:-1,Pluto TV Series Español
+https://plutotv-series.stream/live.m3u8
+#EXTINF:-1,Pluto TV Deportes Español
+https://plutotv-sports.stream/live.m3u8
