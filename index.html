@@ -51,7 +51,6 @@ header h1 {
     cursor: pointer;
     border-radius: 6px;
     font-weight: bold;
-    user-select: none;
 }
 
 .country:hover {
@@ -60,6 +59,7 @@ header h1 {
 
 .channel-box {
     display: none;
+    margin-bottom: 10px;
 }
 
 .channel-box.active {
@@ -109,7 +109,10 @@ video {
 </div>
 
 <script>
-const m3uUrl = "showtv.m3u";
+
+// 🔥 LISTA GRANDE ORGANIZADA POR PAÍS
+const m3uUrl = "https://iptv-org.github.io/iptv/index.country.m3u";
+
 const list = document.getElementById("channelList");
 const searchInput = document.getElementById("searchInput");
 const video = document.getElementById("video");
@@ -153,7 +156,7 @@ function render(data) {
 
         const countryDiv = document.createElement("div");
         countryDiv.className = "country";
-        countryDiv.textContent = country;
+        countryDiv.textContent = country + " (" + data[country].length + ")";
 
         const channelBox = document.createElement("div");
         channelBox.className = "channel-box";
@@ -162,13 +165,10 @@ function render(data) {
             const chDiv = document.createElement("div");
             chDiv.className = "channel";
             chDiv.textContent = ch.name;
-
             chDiv.onclick = () => playStream(ch.url);
-
             channelBox.appendChild(chDiv);
         });
 
-        // TOGGLE REAL
         countryDiv.onclick = () => {
             channelBox.classList.toggle("active");
         };
@@ -205,6 +205,7 @@ searchInput.addEventListener("input", () => {
 });
 
 loadM3U();
+
 </script>
 
 </body>
