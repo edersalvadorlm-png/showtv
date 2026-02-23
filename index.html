@@ -22,9 +22,22 @@ header {
     color: orange;
 }
 
+.search-box {
+    padding: 10px;
+    background-color: #1a1a1a;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+}
+
 .container {
     display: flex;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 120px);
 }
 
 .channel-list {
@@ -67,6 +80,10 @@ video {
 
 <header>SHOW TV</header>
 
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Buscar canal...">
+</div>
+
 <div class="container">
     <div class="channel-list" id="channelList">
         Cargando canales...
@@ -79,8 +96,11 @@ video {
 
 <script>
 const m3uUrl = "https://raw.githubusercontent.com/edersalvadorlm-png/showtv/main/showtv.m3u";
+
 const list = document.getElementById("channelList");
-list.innerHTML = "Cargando canales...";
+const searchInput = document.getElementById("searchInput");
+
+let allChannels = [];
 
 async function loadM3U(url) {
     const response = await fetch(url);
@@ -101,6 +121,8 @@ async function loadM3U(url) {
             } 
             else if (streamUrl.startsWith("http")) {
 
+                allChannels.push({ name, url: streamUrl });
+
                 const channel = document.createElement("div");
                 channel.className = "channel";
                 channel.textContent = name;
@@ -109,6 +131,18 @@ async function loadM3U(url) {
             }
         }
     }
+}
+
+function renderChannels(channels) {
+    list.innerHTML = "";
+
+    channels.forEach(channel => {
+        const div = document.createElement("div");
+        div.className = "channel";
+        div.textContent = channel.name;
+        div.onclick = () => playStream(channel.url);
+        list.appendChild(div);
+    });
 }
 
 function playStream(url){
@@ -124,6 +158,16 @@ function playStream(url){
         video.play();
     }
 }
+
+searchInput.addEventListener("input", function () {
+    const searchText = this.value.toLowerCase();
+
+    const filtered = allChannels.filter(channel =>
+        channel.name.toLowerCase().includes(searchText)
+    );
+
+    renderChannels(filtered);
+});
 
 loadM3U(m3uUrl);
 </script>
