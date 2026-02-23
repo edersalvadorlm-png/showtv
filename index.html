@@ -87,50 +87,54 @@ video {
 </div>
 
 <script>
-const m3uUrl = "https://raw.githubusercontent.com/edersalvadorlm-png/showtv/main/showtv.m3u";
+const m3uUrl = "showtv.m3u";
 const list = document.getElementById("channelList");
 const searchInput = document.getElementById("searchInput");
 let allChannels = [];
 
 async function loadM3U(url) {
+    list.innerHTML = "Cargando canales...";
+
     const res = await fetch(url);
     const text = await res.text();
     const lines = text.split("\n");
 
+    allChannels = [];
+
     for (let i = 0; i < lines.length; i++) {
         if (lines[i].startsWith("#EXTINF")) {
-            const name = lines[i].split(",")[1];
+            const name = lines[i].split(",")[1]?.trim();
             const streamUrl = lines[i + 1]?.trim();
-            if (!streamUrl) continue;
 
-            if (streamUrl.endsWith(".m3u")) {
-                await loadM3U(streamUrl);
-            } else {
-                allChannels.push({ name, url: streamUrl });
+            if (!name || !streamUrl) continue;
 
-                const div = document.createElement("div");
-                div.className = "channel";
-                div.textContent = name;
-                div.onclick = () => playStream(streamUrl);
-                list.appendChild(div);
-            }
+            allChannels.push({ name, url: streamUrl });
         }
     }
+
+    renderChannels(allChannels);
 }
 
 function renderChannels(arr) {
     list.innerHTML = "";
+
+    if (arr.length === 0) {
+        list.innerHTML = "No se encontraron canales.";
+        return;
+    }
+
     arr.forEach(c => {
-        const d = document.createElement("div");
-        d.className = "channel";
-        d.textContent = c.name;
-        d.onclick = () => playStream(c.url);
-        list.appendChild(d);
+        const div = document.createElement("div");
+        div.className = "channel";
+        div.textContent = c.name;
+        div.onclick = () => playStream(c.url);
+        list.appendChild(div);
     });
 }
 
 function playStream(url) {
     const video = document.getElementById("video");
+
     if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(url);
@@ -142,7 +146,10 @@ function playStream(url) {
 
 searchInput.addEventListener("input", () => {
     const q = searchInput.value.toLowerCase();
-    renderChannels(allChannels.filter(c => c.name.toLowerCase().includes(q)));
+    const filtered = allChannels.filter(c =>
+        c.name.toLowerCase().includes(q)
+    );
+    renderChannels(filtered);
 });
 
 loadM3U(m3uUrl);
