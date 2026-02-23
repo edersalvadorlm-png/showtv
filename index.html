@@ -51,6 +51,7 @@ header h1 {
     cursor: pointer;
     border-radius: 6px;
     font-weight: bold;
+    user-select: none;
 }
 
 .country:hover {
@@ -59,6 +60,10 @@ header h1 {
 
 .channel-box {
     display: none;
+}
+
+.channel-box.active {
+    display: block;
 }
 
 .channel {
@@ -152,26 +157,20 @@ function render(data) {
 
         const channelBox = document.createElement("div");
         channelBox.className = "channel-box";
-        channelBox.style.display = "none";
 
         data[country].forEach(ch => {
             const chDiv = document.createElement("div");
             chDiv.className = "channel";
             chDiv.textContent = ch.name;
 
-            chDiv.onclick = function() {
-                playStream(ch.url);
-            };
+            chDiv.onclick = () => playStream(ch.url);
 
             channelBox.appendChild(chDiv);
         });
 
-        countryDiv.onclick = function() {
-            if (channelBox.style.display === "none") {
-                channelBox.style.display = "block";
-            } else {
-                channelBox.style.display = "none";
-            }
+        // TOGGLE REAL
+        countryDiv.onclick = () => {
+            channelBox.classList.toggle("active");
         };
 
         list.appendChild(countryDiv);
