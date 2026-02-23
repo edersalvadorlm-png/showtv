@@ -152,23 +152,27 @@ function render(data) {
 
         const channelBox = document.createElement("div");
         channelBox.className = "channel-box";
+        channelBox.style.display = "none";
 
         data[country].forEach(ch => {
             const chDiv = document.createElement("div");
             chDiv.className = "channel";
             chDiv.textContent = ch.name;
 
-            chDiv.addEventListener("click", () => {
+            chDiv.onclick = function() {
                 playStream(ch.url);
-            });
+            };
 
             channelBox.appendChild(chDiv);
         });
 
-        countryDiv.addEventListener("click", () => {
-            channelBox.style.display =
-                channelBox.style.display === "none" ? "block" : "none";
-        });
+        countryDiv.onclick = function() {
+            if (channelBox.style.display === "none") {
+                channelBox.style.display = "block";
+            } else {
+                channelBox.style.display = "none";
+            }
+        };
 
         list.appendChild(countryDiv);
         list.appendChild(channelBox);
