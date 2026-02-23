@@ -44,9 +44,26 @@ header h1 {
     padding: 10px;
 }
 
-.channel {
+.country {
+    background-color: #333;
     padding: 10px;
-    margin-bottom: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.country:hover {
+    background-color: #444;
+}
+
+.channel-box {
+    display: none;
+}
+
+.channel {
+    padding: 8px;
+    margin: 5px 0 5px 15px;
     background-color: #222;
     cursor: pointer;
     border-radius: 6px;
@@ -90,51 +107,75 @@ video {
 const m3uUrl = "showtv.m3u";
 const list = document.getElementById("channelList");
 const searchInput = document.getElementById("searchInput");
-let allChannels = [];
+const video = document.getElementById("video");
 
-async function loadM3U(url) {
-    list.innerHTML = "Cargando canales...";
+let channelsByCountry = {};
 
-    const res = await fetch(url);
+async function loadM3U() {
+    const res = await fetch(m3uUrl);
     const text = await res.text();
     const lines = text.split("\n");
 
-    allChannels = [];
+    channelsByCountry = {};
 
     for (let i = 0; i < lines.length; i++) {
         if (lines[i].startsWith("#EXTINF")) {
-            const name = lines[i].split(",")[1]?.trim();
-            const streamUrl = lines[i + 1]?.trim();
 
-            if (!name || !streamUrl) continue;
+            const info = lines[i];
+            const name = info.split(",")[1]?.trim();
+            const url = lines[i + 1]?.trim();
 
-            allChannels.push({ name, url: streamUrl });
+            if (!name || !url) continue;
+
+            const groupMatch = info.match(/group-title="([^"]+)"/);
+            const country = groupMatch ? groupMatch[1] : "Otros";
+
+            if (!channelsByCountry[country]) {
+                channelsByCountry[country] = [];
+            }
+
+            channelsByCountry[country].push({ name, url });
         }
     }
 
-    renderChannels(allChannels);
+    render(channelsByCountry);
 }
 
-function renderChannels(arr) {
+function render(data) {
     list.innerHTML = "";
 
-    if (arr.length === 0) {
-        list.innerHTML = "No se encontraron canales.";
-        return;
-    }
+    Object.keys(data).forEach(country => {
 
-    arr.forEach(c => {
-        const div = document.createElement("div");
-        div.className = "channel";
-        div.textContent = c.name;
-        div.onclick = () => playStream(c.url);
-        list.appendChild(div);
+        const countryDiv = document.createElement("div");
+        countryDiv.className = "country";
+        countryDiv.textContent = country;
+
+        const channelBox = document.createElement("div");
+        channelBox.className = "channel-box";
+
+        data[country].forEach(ch => {
+            const chDiv = document.createElement("div");
+            chDiv.className = "channel";
+            chDiv.textContent = ch.name;
+
+            chDiv.addEventListener("click", () => {
+                playStream(ch.url);
+            });
+
+            channelBox.appendChild(chDiv);
+        });
+
+        countryDiv.addEventListener("click", () => {
+            channelBox.style.display =
+                channelBox.style.display === "none" ? "block" : "none";
+        });
+
+        list.appendChild(countryDiv);
+        list.appendChild(channelBox);
     });
 }
 
 function playStream(url) {
-    const video = document.getElementById("video");
-
     if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(url);
@@ -146,13 +187,21 @@ function playStream(url) {
 
 searchInput.addEventListener("input", () => {
     const q = searchInput.value.toLowerCase();
-    const filtered = allChannels.filter(c =>
-        c.name.toLowerCase().includes(q)
-    );
-    renderChannels(filtered);
+    const filtered = {};
+
+    Object.keys(channelsByCountry).forEach(country => {
+        const matches = channelsByCountry[country].filter(ch =>
+            ch.name.toLowerCase().includes(q)
+        );
+        if (matches.length > 0) {
+            filtered[country] = matches;
+        }
+    });
+
+    render(filtered);
 });
 
-loadM3U(m3uUrl);
+loadM3U();
 </script>
 
 </body>
