@@ -1,5 +1,3 @@
-#EXTM3U
-
 #-------------------
 # MÉXICO - Canales completos
 #-------------------
@@ -9,23 +7,42 @@ http://streamingurl.com/mexico/azteca7
 #EXTINF:-1 tvg-id="Televisa.MX" tvg-name="Canal 5" tvg-logo="https://logo.com/canal5.png" group-title="Entretenimiento",Canal 5
 http://streamingurl.com/mexico/canal5
 
-#EXTINF:-1 tvg-id="FoxSports.MX" tvg-name="Fox Sports" tvg-logo="https://logo.com/foxsports.png" group-title="Deportes",Fox Sports
-http://streamingurl.com/mexico/foxsports
+#--------- CANALES NUEVOS AGREGADOS ---------
+#EXTINF:-1 tvg-id="CanalOnce.MX" tvg-name="Canal Once" tvg-logo="https://logo.com/canalonce.png" group-title="Entretenimiento",Canal Once
+http://streamingurl.com/mexico/canalonce
 
-#EXTINF:-1 tvg-id="ESPN.MX" tvg-name="ESPN México" tvg-logo="https://logo.com/espn.png" group-title="Deportes",ESPN México
-http://streamingurl.com/mexico/espn
+#EXTINF:-1 tvg-id="TVCable.MX" tvg-name="Televisión Azteca Deportes" tvg-logo="https://logo.com/aztecadeportes.png" group-title="Deportes",TV Azteca Deportes
+http://streamingurl.com/mexico/aztecadeportes
 
-#EXTINF:-1 tvg-id="ForoTV.MX" tvg-name="Foro TV" tvg-logo="https://logo.com/forotv.png" group-title="Noticias",Foro TV
-http://streamingurl.com/mexico/forotv
+#EXTINF:-1 tvg-id="Milenio.MX" tvg-name="Milenio TV" tvg-logo="https://logo.com/milenio.png" group-title="Noticias",Milenio TV
+http://streamingurl.com/mexico/milenio
 
 #-------------------
-# USA - Canales completos
+# CHILE - Canales completos
 #-------------------
-#EXTINF:-1 tvg-id="CNN.US" tvg-name="CNN" tvg-logo="https://logo.com/cnn.png" group-title="Noticias",CNN
-http://streamingurl.com/usa/cnn
+#EXTINF:-1 tvg-id="TVN.CL" tvg-name="TVN" tvg-logo="https://logo.com/tvn.png" group-title="Entretenimiento",TVN
+http://streamingurl.com/chile/tvn
 
-#EXTINF:-1 tvg-id="NBC.US" tvg-name="NBC" tvg-logo="https://logo.com/nbc.png" group-title="Entretenimiento",NBC
-http://streamingurl.com/usa/nbc
+#EXTINF:-1 tvg-id="CHV.CL" tvg-name="Chilevisión" tvg-logo="https://logo.com/chv.png" group-title="Entretenimiento",Chilevisión
+http://streamingurl.com/chile/chilevision
 
-#EXTINF:-1 tvg-id="ESPN.US" tvg-name="ESPN" tvg-logo="https://logo.com/espn_us.png" group-title="Deportes",ESPN
-http://streamingurl.com/usa/espn
+#EXTINF:-1 tvg-id="ESPN.CL" tvg-name="ESPN Chile" tvg-logo="https://logo.com/espn_chile.png" group-title="Deportes",ESPN Chile
+http://streamingurl.com/chile/espn
+
+#EXTINF:-1 tvg-id="CNNChile.CL" tvg-name="CNN Chile" tvg-logo="https://logo.com/cnnchile.png" group-title="Noticias",CNN Chile
+http://streamingurl.com/chile/cnnchile
+
+#-------------------
+# COLOMBIA - Canales completos
+#-------------------
+#EXTINF:-1 tvg-id="RCN.CO" tvg-name="RCN" tvg-logo="https://logo.com/rcn.png" group-title="Entretenimiento",RCN
+http://streamingurl.com/colombia/rcn
+
+#EXTINF:-1 tvg-id="Caracol.CO" tvg-name="Caracol TV" tvg-logo="https://logo.com/caracol.png" group-title="Entretenimiento",Caracol TV
+http://streamingurl.com/colombia/caracol
+
+#EXTINF:-1 tvg-id="ESPN.CO" tvg-name="ESPN Colombia" tvg-logo="https://logo.com/espn_co.png" group-title="Deportes",ESPN Colombia
+http://streamingurl.com/colombia/espn
+
+#EXTINF:-1 tvg-id="RCNNoticias.CO" tvg-name="RCN Noticias" tvg-logo="https://logo.com/rcnnoticias.png" group-title="Noticias",RCN Noticias
+http://streamingurl.com/colombia/rcnnoticias
