@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <title>SHOW TV</title>
@@ -15,28 +15,26 @@ body {
 
 header {
     background-color: #111;
-    padding: 15px;
+    padding: 10px;
     text-align: center;
-    font-size: 24px;
-    font-weight: bold;
+}
+
+header h1 {
+    margin: 5px 0;
     color: orange;
 }
 
-.search-box {
-    padding: 10px;
-    background-color: #1a1a1a;
-}
-
-.search-box input {
-    width: 100%;
+#searchInput {
+    width: 90%;
     padding: 8px;
     border-radius: 6px;
     border: none;
+    margin-top: 8px;
 }
 
 .container {
     display: flex;
-    height: 80vh; /* más simple */
+    height: calc(100vh - 120px);
 }
 
 .channel-list {
@@ -70,24 +68,19 @@ header {
 video {
     width: 95%;
     height: 95%;
-    background: black;
 }
 </style>
 </head>
 
 <body>
 
-<header>SHOW TV</header>
-
-<div class="search-box">
+<header>
+    <h1>SHOW TV</h1>
     <input type="text" id="searchInput" placeholder="Buscar canal...">
-</div>
+</header>
 
 <div class="container">
-    <div class="channel-list" id="channelList">
-        Cargando canales...
-    </div>
-
+    <div class="channel-list" id="channelList">Cargando canales...</div>
     <div class="player">
         <video id="video" controls autoplay></video>
     </div>
@@ -95,75 +88,61 @@ video {
 
 <script>
 const m3uUrl = "https://raw.githubusercontent.com/edersalvadorlm-png/showtv/main/showtv.m3u";
-
 const list = document.getElementById("channelList");
 const searchInput = document.getElementById("searchInput");
-
 let allChannels = [];
 
 async function loadM3U(url) {
-    const response = await fetch(url);
-    const data = await response.text();
-    const lines = data.split("\n");
+    const res = await fetch(url);
+    const text = await res.text();
+    const lines = text.split("\n");
 
     for (let i = 0; i < lines.length; i++) {
-
         if (lines[i].startsWith("#EXTINF")) {
-
             const name = lines[i].split(",")[1];
             const streamUrl = lines[i + 1]?.trim();
-
             if (!streamUrl) continue;
 
             if (streamUrl.endsWith(".m3u")) {
                 await loadM3U(streamUrl);
-            } 
-            else if (streamUrl.startsWith("http")) {
-
+            } else {
                 allChannels.push({ name, url: streamUrl });
 
-                const channel = document.createElement("div");
-                channel.className = "channel";
-                channel.textContent = name;
-                channel.onclick = () => playStream(streamUrl);
-                list.appendChild(channel);
+                const div = document.createElement("div");
+                div.className = "channel";
+                div.textContent = name;
+                div.onclick = () => playStream(streamUrl);
+                list.appendChild(div);
             }
         }
     }
 }
 
-function renderChannels(channels) {
+function renderChannels(arr) {
     list.innerHTML = "";
-
-    channels.forEach(channel => {
-        const div = document.createElement("div");
-        div.className = "channel";
-        div.textContent = channel.name;
-        div.onclick = () => playStream(channel.url);
-        list.appendChild(div);
+    arr.forEach(c => {
+        const d = document.createElement("div");
+        d.className = "channel";
+        d.textContent = c.name;
+        d.onclick = () => playStream(c.url);
+        list.appendChild(d);
     });
 }
 
-function playStream(url){
+function playStream(url) {
     const video = document.getElementById("video");
-
-    if(Hls.isSupported()){
+    if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(url);
         hls.attachMedia(video);
-        video.play();
     } else {
         video.src = url;
-        video.play();
     }
 }
 
-searchInput.addEventListener("input", function () {
-    const text = this.value.toLowerCase();
-    const filtered = allChannels.filter(c =>
-        c.name.toLowerCase().includes(text)
-    );
-    renderChannels(filtered);
+searchInput.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase();
+    renderChannels(allChannels.filter(c => c.name.toLowerCase().includes(q)));
 });
 
 loadM3U(m3uUrl);
