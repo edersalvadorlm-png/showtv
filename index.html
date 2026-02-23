@@ -22,9 +22,21 @@ header {
     color: orange;
 }
 
+.search-box {
+    padding: 10px;
+    background: #1a1a1a;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+}
+
 .container {
     display: flex;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 120px);
 }
 
 .channel-list {
@@ -35,10 +47,19 @@ header {
 }
 
 .channel {
-    padding: 10px;
-    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 6px;
     background-color: #222;
     cursor: pointer;
+    border-radius: 6px;
+}
+
+.channel img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
     border-radius: 6px;
 }
 
@@ -60,12 +81,30 @@ video {
     height: 95%;
     background: black;
 }
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .channel-list {
+        width: 100%;
+        height: 40%;
+    }
+    .player {
+        width: 100%;
+        height: 60%;
+    }
+}
 </style>
 </head>
 
 <body>
 
 <header>SHOW TV</header>
+
+<div class="search-box">
+    <input type="text" id="search" placeholder="Buscar canal...">
+</div>
 
 <div class="container">
     <div class="channel-list" id="channelList">
@@ -81,7 +120,9 @@ video {
 const m3uUrl = "https://raw.githubusercontent.com/edersalvadorlm-png/showtv/main/showtv.m3u";
 
 const list = document.getElementById("channelList");
-list.innerHTML = "Cargando canales...";
+const searchInput = document.getElementById("search");
+let allChannels = [];
+let hls;
 
 async function loadM3U(url) {
     const response = await fetch(url);
@@ -90,37 +131,67 @@ async function loadM3U(url) {
 
     for (let i = 0; i < lines.length; i++) {
         if (lines[i].startsWith("#EXTINF")) {
-            const name = lines[i].split(",")[1];
+
+            const info = lines[i];
+            const name = info.split(",")[1];
+
+            const logoMatch = info.match(/tvg-logo="(.*?)"/);
+            const logo = logoMatch ? logoMatch[1] : "";
+
+            const groupMatch = info.match(/group-title="(.*?)"/);
+            const group = groupMatch ? groupMatch[1] : "Otros";
+
             const streamUrl = lines[i + 1]?.trim();
+            if (!streamUrl || !streamUrl.startsWith("http")) continue;
 
-            if (!streamUrl) continue;
-
-            if (streamUrl.endsWith(".m3u")) {
-                // Si es otra lista, cargarla también
-                await loadM3U(streamUrl);
-            } else if (streamUrl.startsWith("http")) {
-                const channel = document.createElement("div");
-                channel.className = "channel";
-                channel.textContent = name;
-                channel.onclick = () => playStream(streamUrl);
-                list.appendChild(channel);
-            }
+            allChannels.push({ name, logo, group, streamUrl });
         }
     }
+
+    renderChannels(allChannels);
+}
+
+function renderChannels(channels){
+    list.innerHTML = "";
+    channels.forEach(channel => {
+        const div = document.createElement("div");
+        div.className = "channel";
+        div.onclick = () => playStream(channel.streamUrl);
+
+        div.innerHTML = `
+            ${channel.logo ? `<img src="${channel.logo}" onerror="this.style.display='none'">` : ""}
+            <span>${channel.name}</span>
+        `;
+
+        list.appendChild(div);
+    });
 }
 
 function playStream(url){
     const video = document.getElementById("video");
+
+    if (hls) {
+        hls.destroy();
+    }
+
     if(Hls.isSupported()){
-        const hls = new Hls();
+        hls = new Hls();
         hls.loadSource(url);
         hls.attachMedia(video);
-        video.play();
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+            video.play();
+        });
     } else {
         video.src = url;
         video.play();
     }
 }
+
+searchInput.addEventListener("input", function(){
+    const value = this.value.toLowerCase();
+    const filtered = allChannels.filter(c => c.name.toLowerCase().includes(value));
+    renderChannels(filtered);
+});
 
 loadM3U(m3uUrl);
 </script>
