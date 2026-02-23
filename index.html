@@ -32,12 +32,11 @@ header {
     padding: 8px;
     border-radius: 6px;
     border: none;
-    font-size: 14px;
 }
 
 .container {
     display: flex;
-    height: calc(100vh - 120px);
+    height: 80vh; /* más simple */
 }
 
 .channel-list {
@@ -160,12 +159,10 @@ function playStream(url){
 }
 
 searchInput.addEventListener("input", function () {
-    const searchText = this.value.toLowerCase();
-
-    const filtered = allChannels.filter(channel =>
-        channel.name.toLowerCase().includes(searchText)
+    const text = this.value.toLowerCase();
+    const filtered = allChannels.filter(c =>
+        c.name.toLowerCase().includes(text)
     );
-
     renderChannels(filtered);
 });
 
