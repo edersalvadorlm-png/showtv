@@ -1,54 +1,90 @@
 #EXTM3U
 
 ##########################
-# 🌎 Lista global de canales públicos
-# Esta lista proviene de iptv-org (miles de canales públicos)
-# Incluye canales por país y lenguaje
-# (tu app los mostrará en la lista)
+# 🇲🇽 MÉXICO
 ##########################
-#EXTINF:-1,Global IPTV - All public channels
-https://iptv-org.github.io/iptv/index.m3u
+
+#EXTINF:-1 group-title="México",Las Estrellas
+https://mdstrm.com/live-stream-playlist/63e83ab99d2c3800085d4c0c.m3u8
+
+#EXTINF:-1 group-title="México",Canal 5
+https://mdstrm.com/live-stream-playlist/63e83c6b9d2c3800085d4c16.m3u8
+
+#EXTINF:-1 group-title="México",Azteca Uno
+https://aztecalive-lh.akamaihd.net/i/0pqgq3i_1@699606/master.m3u8
+
+#EXTINF:-1 group-title="México",Azteca 7
+https://aztecalive-lh.akamaihd.net/i/0ti4y5k_1@699607/master.m3u8
+
+#EXTINF:-1 group-title="México",ADN 40 (Noticias)
+https://aztecalive-lh.akamaihd.net/i/0ng0t6c_1@699608/master.m3u8
+
 
 ##########################
-# 🇪🇸 ESPAÑA - Publicos y Abiertos
+# 🇦🇷 ARGENTINA
 ##########################
-#EXTINF:-1,España - Todos
-https://iptv-org.github.io/iptv/countries/es.m3u
+
+#EXTINF:-1 group-title="Argentina",TV Pública
+https://cnt.arcast.net/arcatv/playlist.m3u8
+
+#EXTINF:-1 group-title="Argentina",Canal 26
+https://live-edge01.telecentro.net.ar/live/smil:canal26.smil/playlist.m3u8
+
+#EXTINF:-1 group-title="Argentina",C5N
+https://live-edge01.telecentro.net.ar/live/smil:c5n.smil/playlist.m3u8
+
 
 ##########################
-# 🇲🇽 MÉXICO - Publicos y Abiertos
+# 🇪🇸 ESPAÑA
 ##########################
-#EXTINF:-1,México - Todos
-https://iptv-org.github.io/iptv/countries/mx.m3u
+
+#EXTINF:-1 group-title="España",La 1
+https://rtvelivestream.akamaized.net/rtvesec/la1/la1_main_dvr.m3u8
+
+#EXTINF:-1 group-title="España",La 2
+https://rtvelivestream.akamaized.net/rtvesec/la2/la2_main_dvr.m3u8
+
+#EXTINF:-1 group-title="España",Teledeporte (Deportes)
+https://rtvelivestream.akamaized.net/rtvesec/tdp/tdp_main_dvr.m3u8
+
+#EXTINF:-1 group-title="España",24h Noticias
+https://rtvelivestream.akamaized.net/rtvesec/24h/24h_main_dvr.m3u8
+
 
 ##########################
-# 🇨🇱 CHILE - Publicos y Abiertos
+# 🇨🇱 CHILE
 ##########################
-#EXTINF:-1,Chile - Todos
-https://iptv-org.github.io/iptv/countries/cl.m3u
+
+#EXTINF:-1 group-title="Chile",TVN Chile
+https://mdstrm.com/live-stream-playlist/5aaabe9e1e8c5f2d64dbe1c6.m3u8
+
+#EXTINF:-1 group-title="Chile",24 Horas Chile (Noticias)
+https://mdstrm.com/live-stream-playlist/5aaabdff1e8c5f2d64dbe1c7.m3u8
+
 
 ##########################
-# 🇦🇷 ARGENTINA - Publicos y Abiertos
+# 🌎 DEPORTES INTERNACIONAL (Abiertos)
 ##########################
-#EXTINF:-1,Argentina - Todos
-https://iptv-org.github.io/iptv/countries/ar.m3u
+
+#EXTINF:-1 group-title="Deportes Internacional",FIFA+
+https://airstreams.stream/fifa/fifaplus/playlist.m3u8
+
+#EXTINF:-1 group-title="Deportes Internacional",Red Bull TV
+https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8
+
+#EXTINF:-1 group-title="Deportes Internacional",Olympic Channel
+https://ott-live.olympicchannel.com/out/u/OC1_3.m3u8
+
 
 ##########################
-# 🗣️ Español - Todas las listadas por idioma
+# 🎬 CINE & FAST
 ##########################
-#EXTINF:-1,Idioma Español
-https://iptv-org.github.io/iptv/languages/spa.m3u
 
-##########################
-# 📰 Noticias Internacionales
-##########################
-#EXTINF:-1,France 24 Español
-https://static.france24.com/live/F24_ES_HI_HLS/live_web.m3u8
-#EXTINF:-1,DW Español
-https://dwamdstream103.akamaized.net/hls/live/2015526/dwstream103/index.m3u8
+#EXTINF:-1 group-title="Cine & FAST",Runtime Acción
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=960
 
-##########################
-# 🎬 FAST & Gratis (Pluto TV & similares)
-##########################
-#EXTINF:-1,Pluto TV (canales públicos vía iptv-org)
-https://iptv-org.github.io/iptv/streams/1498.m3u8
+#EXTINF:-1 group-title="Cine & FAST",Runtime Cine Latino
+https://stream.ads.ottera.tv/playlist.m3u8?network_id=1332
+
+#EXTINF:-1 group-title="Cine & FAST",Pluto TV Cine Acción
+https://service-stitcher.clusters.pluto.tv/stitch/hls/channel/5f9847113d5f4f0007c4b2ea/master.m3u8
