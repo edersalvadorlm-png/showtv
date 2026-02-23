@@ -87,7 +87,7 @@ header h1 {
     background-color: black;
 }
 
-video {
+video, iframe {
     width: 95%;
     height: 95%;
 }
@@ -103,7 +103,7 @@ video {
 
 <div class="container">
     <div class="channel-list" id="channelList">Cargando canales...</div>
-    <div class="player">
+    <div class="player" id="playerContainer">
         <video id="video" controls autoplay></video>
     </div>
 </div>
@@ -115,9 +115,36 @@ const m3uUrl = "https://iptv-org.github.io/iptv/index.country.m3u";
 
 const list = document.getElementById("channelList");
 const searchInput = document.getElementById("searchInput");
-const video = document.getElementById("video");
 
 let channelsByCountry = {};
+
+// 🔹 CANALES EXTRA PARA HISPANOAMÉRICA
+const extraChannels = {
+    "México": [
+        { name: "Azteca Uno (Web)", url: "https://www.tvazteca.com/aztecauno", type: "web" },
+        { name: "Las Estrellas (Web)", url: "https://www.lasestrellas.tv/en-vivo", type: "web" },
+        { name: "Imagen TV (Web)", url: "https://www.imagentv.com/en-vivo", type: "web" },
+        { name: "Multimedios (Web)", url: "https://www.multimedios.com/tv-en-vivo", type: "web" }
+    ],
+    "Colombia": [
+        { name: "Señal Colombia (Web)", url: "https://www.senalcolombia.tv/en-vivo", type: "web" },
+        { name: "Canal Institucional (Web)", url: "https://www.canalinstitucional.tv/en-vivo", type: "web" }
+    ],
+    "Chile": [
+        { name: "TVN Chile (Web)", url: "https://www.tvn.cl/tvnplayer/tvn", type: "web" },
+        { name: "Canal 13 Chile (Web)", url: "https://www.13.cl/player", type: "web" }
+    ],
+    "Argentina": [
+        { name: "TV Pública (Web)", url: "https://www.tvpublica.com.ar/en-vivo", type: "web" }
+    ],
+    "Perú": [
+        { name: "TV Perú (Web)", url: "https://www.tvperu.gob.pe/en-vivo", type: "web" }
+    ],
+    "España": [
+        { name: "La 1 RTVE (Web)", url: "https://www.rtve.es/directo/la1/", type: "web" },
+        { name: "Antena 3 (Web)", url: "https://www.antena3.com/directo/", type: "web" }
+    ]
+};
 
 async function loadM3U() {
     const res = await fetch(m3uUrl);
@@ -146,6 +173,15 @@ async function loadM3U() {
         }
     }
 
+    // 🔹 AGREGAR CANALES EXTRA HISPANOHABLANTES
+    Object.keys(extraChannels).forEach(country => {
+        if (!channelsByCountry[country]) channelsByCountry[country] = [];
+        channelsByCountry[country] = [
+            ...extraChannels[country],
+            ...channelsByCountry[country]
+        ];
+    });
+
     render(channelsByCountry);
 }
 
@@ -165,7 +201,7 @@ function render(data) {
             const chDiv = document.createElement("div");
             chDiv.className = "channel";
             chDiv.textContent = ch.name;
-            chDiv.onclick = () => playStream(ch.url);
+            chDiv.onclick = () => playStream(ch.url, ch.type || "stream");
             channelBox.appendChild(chDiv);
         });
 
@@ -178,7 +214,25 @@ function render(data) {
     });
 }
 
-function playStream(url) {
+function playStream(url, type = "stream") {
+
+    const container = document.getElementById("playerContainer");
+
+    if (type === "web") {
+        container.innerHTML = `
+            <iframe src="${url}" 
+                width="100%" 
+                height="100%" 
+                frameborder="0" 
+                allowfullscreen>
+            </iframe>
+        `;
+        return;
+    }
+
+    container.innerHTML = `<video id="video" controls autoplay></video>`;
+    const video = document.getElementById("video");
+
     if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(url);
@@ -188,6 +242,7 @@ function playStream(url) {
     }
 }
 
+// 🔹 BUSCADOR
 searchInput.addEventListener("input", () => {
     const q = searchInput.value.toLowerCase();
     const filtered = {};
