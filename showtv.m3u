@@ -1,48 +1,60 @@
-#-------------------
-# MÉXICO - Canales completos
-#-------------------
-#EXTINF:-1 tvg-id="Azteca1.MX" tvg-name="Azteca 7" tvg-logo="https://logo.com/azteca7.png" group-title="Entretenimiento",Azteca 7
-http://streamingurl.com/mexico/azteca7
+#EXTM3U
 
-#EXTINF:-1 tvg-id="Televisa.MX" tvg-name="Canal 5" tvg-logo="https://logo.com/canal5.png" group-title="Entretenimiento",Canal 5
-http://streamingurl.com/mexico/canal5
+#========================
+# 🇲🇽 MEXICO
+#========================
 
-#--------- CANALES NUEVOS AGREGADOS ---------
-#EXTINF:-1 tvg-id="CanalOnce.MX" tvg-name="Canal Once" tvg-logo="https://logo.com/canalonce.png" group-title="Entretenimiento",Canal Once
-http://streamingurl.com/mexico/canalonce
+#EXTINF:-1 group-title="México | Cultural",Canal Once
+https://live.canalonce.mx/live/once/playlist.m3u8
 
-#EXTINF:-1 tvg-id="TVCable.MX" tvg-name="Televisión Azteca Deportes" tvg-logo="https://logo.com/aztecadeportes.png" group-title="Deportes",TV Azteca Deportes
-http://streamingurl.com/mexico/aztecadeportes
+#EXTINF:-1 group-title="México | Cultural",Canal 22
+https://5ef74b8c9106a.streamlock.net/live/smil:canal22.smil/playlist.m3u8
 
-#EXTINF:-1 tvg-id="Milenio.MX" tvg-name="Milenio TV" tvg-logo="https://logo.com/milenio.png" group-title="Noticias",Milenio TV
-http://streamingurl.com/mexico/milenio
+#EXTINF:-1 group-title="México | Noticias",Milenio TV
+https://mdstrm.com/live-stream-playlist/5c8d0fd2b8c1d6001b9b3f8e.m3u8
 
-#-------------------
-# CHILE - Canales completos
-#-------------------
-#EXTINF:-1 tvg-id="TVN.CL" tvg-name="TVN" tvg-logo="https://logo.com/tvn.png" group-title="Entretenimiento",TVN
-http://streamingurl.com/chile/tvn
+#EXTINF:-1 group-title="México | Público",TV UNAM
+https://tvunamlive.izzigo.tv/playlist.m3u8
 
-#EXTINF:-1 tvg-id="CHV.CL" tvg-name="Chilevisión" tvg-logo="https://logo.com/chv.png" group-title="Entretenimiento",Chilevisión
-http://streamingurl.com/chile/chilevision
 
-#EXTINF:-1 tvg-id="ESPN.CL" tvg-name="ESPN Chile" tvg-logo="https://logo.com/espn_chile.png" group-title="Deportes",ESPN Chile
-http://streamingurl.com/chile/espn
+#========================
+# 🇨🇴 COLOMBIA
+#========================
 
-#EXTINF:-1 tvg-id="CNNChile.CL" tvg-name="CNN Chile" tvg-logo="https://logo.com/cnnchile.png" group-title="Noticias",CNN Chile
-http://streamingurl.com/chile/cnnchile
+#EXTINF:-1 group-title="Colombia | Público",Señal Colombia
+https://rtvc-play-live.s3.amazonaws.com/senalcolombia.m3u8
 
-#-------------------
-# COLOMBIA - Canales completos
-#-------------------
-#EXTINF:-1 tvg-id="RCN.CO" tvg-name="RCN" tvg-logo="https://logo.com/rcn.png" group-title="Entretenimiento",RCN
-http://streamingurl.com/colombia/rcn
+#EXTINF:-1 group-title="Colombia | Cultural",Canal Institucional
+https://rtvc-play-live.s3.amazonaws.com/canalinstitucional.m3u8
 
-#EXTINF:-1 tvg-id="Caracol.CO" tvg-name="Caracol TV" tvg-logo="https://logo.com/caracol.png" group-title="Entretenimiento",Caracol TV
-http://streamingurl.com/colombia/caracol
 
-#EXTINF:-1 tvg-id="ESPN.CO" tvg-name="ESPN Colombia" tvg-logo="https://logo.com/espn_co.png" group-title="Deportes",ESPN Colombia
-http://streamingurl.com/colombia/espn
+#========================
+# 🇨🇱 CHILE
+#========================
 
-#EXTINF:-1 tvg-id="RCNNoticias.CO" tvg-name="RCN Noticias" tvg-logo="https://logo.com/rcnnoticias.png" group-title="Noticias",RCN Noticias
-http://streamingurl.com/colombia/rcnnoticias
+#EXTINF:-1 group-title="Chile | Público",TVN Chile
+https://mdstrm.com/live-stream-playlist/5aaabe9a2c9d09000436e4e7.m3u8
+
+
+#========================
+# 🇦🇷 ARGENTINA
+#========================
+
+#EXTINF:-1 group-title="Argentina | Público",TV Pública
+https://g1.vxral.com/live/tvpublica/live.isml/.m3u8
+
+
+#========================
+# 🇪🇸 ESPAÑA
+#========================
+
+#EXTINF:-1 group-title="España | Público",La 1 RTVE
+https://rtvelivestream.akamaized.net/rtve/rtve1_main.m3u8
+
+
+#========================
+# 🇵🇪 PERU
+#========================
+
+#EXTINF:-1 group-title="Perú | Público",TV Perú
+https://cdnh4.iblups.com/hls/R9WtilpKKB.m3u8
