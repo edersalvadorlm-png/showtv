@@ -3,712 +3,349 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SHOW TV - Inicio</title>
+<title>SHOW TV</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #050505;
-    --surface: #0f0f0f;
-    --surface2: #1a1a1a;
-    --border: rgba(255,102,0,0.25);
-    --accent: #ff6600;
-    --accent2: #ff9933;
-    --text: #f0f0f0;
-    --muted: #888;
-    --radius: 14px;
-    --glow: 0 0 20px rgba(255,102,0,0.3);
-  }
-
-  body {
-    font-family: 'Rajdhani', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ─── NOISE TEXTURE ─── */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.5;
-  }
-
-  /* ─── HOME SCREEN ─── */
-  #home-screen {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px 20px 40px;
-  }
-
-  /* Logo / Hero */
-  .hero {
-    text-align: center;
-    margin-bottom: 36px;
-  }
-
-  .logo-wrap {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 10px;
-  }
-
-  .logo-icon {
-    width: 56px;
-    height: 48px;
-    border-radius: 10px;
-    filter: drop-shadow(0 0 12px rgba(255,102,0,0.6));
-    animation: logoPulse 3s ease-in-out infinite;
-  }
-
-  @keyframes logoPulse {
-    0%, 100% { filter: drop-shadow(0 0 10px rgba(255,102,0,0.5)); }
-    50% { filter: drop-shadow(0 0 22px rgba(255,102,0,0.9)); }
-  }
-
-  .logo-text {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 42px;
-    letter-spacing: 4px;
-    color: var(--accent);
-    line-height: 1;
-    text-shadow: 0 0 30px rgba(255,102,0,0.5);
-  }
-
-  .tagline {
-    font-size: 13px;
-    letter-spacing: 0.2em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  /* ─── VIDEO PREVIEW ORNAMENTED ─── */
-  .preview-frame {
-    position: relative;
-    width: min(340px, 90vw);
-    margin-bottom: 40px;
-    cursor: pointer;
-  }
-
-  .preview-inner {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%;
-    background: #0a0a0a;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1.5px solid var(--border);
-    box-shadow: var(--glow), inset 0 0 40px rgba(0,0,0,0.8);
-  }
-
-  .preview-content {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(ellipse at center, #1a0a00 0%, #050505 70%);
-  }
-
-  /* Celtic ornament SVG */
-  .ornament {
-    position: absolute;
-    inset: 0;
-    opacity: 0.18;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cpath d='M100 10 C60 10 20 40 20 80 C20 120 60 150 100 150 C140 150 180 120 180 80 C180 40 140 10 100 10 Z' stroke='%23ff6600' fill='none' stroke-width='1.5'/%3E%3Cpath d='M100 30 C70 30 40 55 40 80 C40 105 70 130 100 130 C130 130 160 105 160 80 C160 55 130 30 100 30 Z' stroke='%23ff6600' fill='none' stroke-width='1'/%3E%3Ccircle cx='100' cy='80' r='25' stroke='%23ff6600' fill='none' stroke-width='1.5'/%3E%3Cpath d='M70 50 Q85 65 100 55 Q115 65 130 50' stroke='%23ff6600' fill='none' stroke-width='1'/%3E%3Cpath d='M70 110 Q85 95 100 105 Q115 95 130 110' stroke='%23ff6600' fill='none' stroke-width='1'/%3E%3C/svg%3E");
-    background-size: cover;
-  }
-
-  .play-btn {
-    position: relative;
-    z-index: 2;
-    width: 64px;
-    height: 64px;
-    background: var(--accent);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 30px rgba(255,102,0,0.7), 0 0 60px rgba(255,102,0,0.3);
-    animation: playPulse 2s ease-in-out infinite;
-    transition: transform 0.2s;
-  }
-
-  .play-btn:hover { transform: scale(1.1); }
-
-  @keyframes playPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(255,102,0,0.6), 0 0 40px rgba(255,102,0,0.2); }
-    50% { box-shadow: 0 0 40px rgba(255,102,0,0.9), 0 0 80px rgba(255,102,0,0.4); }
-  }
-
-  .play-btn svg {
-    width: 28px;
-    height: 28px;
-    fill: #000;
-    margin-left: 4px;
-  }
-
-  /* Corner accents */
-  .preview-frame::before,
-  .preview-frame::after {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-color: var(--accent);
-    border-style: solid;
-    z-index: 3;
-  }
-  .preview-frame::before {
-    top: -3px; left: -3px;
-    border-width: 2px 0 0 2px;
-    border-radius: 4px 0 0 0;
-  }
-  .preview-frame::after {
-    bottom: -3px; right: -3px;
-    border-width: 0 2px 2px 0;
-    border-radius: 0 0 4px 0;
-  }
-
-  /* ─── MENU BUTTONS ─── */
-  .menu-grid {
-    width: min(480px, 100%);
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .menu-btn {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    background: linear-gradient(135deg, #111 0%, #0d0d0d 100%);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    cursor: pointer;
-    text-decoration: none;
-    color: var(--text);
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    animation: slideIn 0.5s ease-out both;
-  }
-
-  .menu-btn:nth-child(1) { animation-delay: 0.05s; }
-  .menu-btn:nth-child(2) { animation-delay: 0.1s; }
-  .menu-btn:nth-child(3) { animation-delay: 0.15s; }
-  .menu-btn:nth-child(4) { animation-delay: 0.2s; }
-  .menu-btn:nth-child(5) { animation-delay: 0.25s; }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-24px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-
-  .menu-btn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(255,102,0,0.04) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-
-  .menu-btn:hover {
-    border-color: var(--accent);
-    box-shadow: var(--glow);
-    transform: translateX(4px);
-  }
-
-  .menu-btn:hover::before { opacity: 1; }
-
-  .btn-icon-wrap {
-    width: 72px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    border-right: 1.5px solid var(--border);
-    background: rgba(255,102,0,0.06);
-    position: relative;
-  }
-
-  .btn-icon-wrap svg {
-    width: 32px;
-    height: 32px;
-    stroke: var(--accent);
-    stroke-width: 1.8;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    filter: drop-shadow(0 0 6px rgba(255,102,0,0.4));
-  }
-
-  .btn-label {
-    flex: 1;
-    padding: 0 20px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 2px;
-    color: var(--text);
-  }
-
-  .btn-arrow {
-    width: 50px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .btn-arrow svg {
-    width: 22px;
-    height: 22px;
-    stroke: var(--accent);
-    stroke-width: 2.5;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transition: transform 0.2s;
-  }
-
-  .menu-btn:hover .btn-arrow svg {
-    transform: translateX(4px);
-  }
-
-  /* Orange left bar */
-  .menu-btn::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 16px;
-    bottom: 16px;
-    width: 3px;
-    background: var(--accent);
-    border-radius: 0 3px 3px 0;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .menu-btn:hover::after { opacity: 1; }
-
-  /* ─── APP SCREENS ─── */
-  .app-screen {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    background: var(--bg);
-    flex-direction: column;
-  }
-
-  .app-screen.active { display: flex; }
-
-  /* Back header */
-  .screen-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: rgba(15,15,15,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    height: 56px;
-    flex-shrink: 0;
-  }
-
-  .back-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--accent);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 6px 10px;
-    border-radius: 8px;
-    transition: background 0.15s;
-  }
-
-  .back-btn:hover { background: rgba(255,102,0,0.1); }
-
-  .back-btn svg {
-    width: 20px;
-    height: 20px;
-    stroke: var(--accent);
-    stroke-width: 2.5;
-    fill: none;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .screen-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 2px;
-    color: var(--text);
-  }
-
-  .screen-body {
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .screen-body iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-  }
-
-  /* ─── TV SCREEN (embedded from original code) ─── */
-  #tv-screen .screen-body {
-    display: flex;
-    height: calc(100vh - 56px);
-  }
-
-  /* Sidebar for TV */
-  .tv-sidebar {
-    width: 280px;
-    min-width: 280px;
-    background: #181818;
-    border-right: 1px solid var(--border);
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tv-sidebar::-webkit-scrollbar { width: 4px; }
-  .tv-sidebar::-webkit-scrollbar-track { background: transparent; }
-  .tv-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-  .sidebar-header {
-    padding: 12px 16px 8px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    background: #181818;
-    z-index: 10;
-  }
-
-  /* TV search */
-  .tv-search-wrap {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 32px;
-    background: #181818;
-    z-index: 9;
-  }
-
-  .tv-search-wrap input {
-    width: 100%;
-    padding: 8px 12px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: #111;
-    color: var(--text);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    outline: none;
-  }
-
-  .tv-search-wrap input:focus { border-color: var(--accent); }
-  .tv-search-wrap input::placeholder { color: var(--muted); }
-
-  .country-group { border-bottom: 1px solid var(--border); }
-
-  .country-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 14px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: left;
-    transition: background 0.15s;
-  }
-
-  .country-btn:hover { background: rgba(255,255,255,0.04); }
-  .country-btn .flag { font-size: 16px; }
-  .country-btn .name { flex: 1; }
-  .country-btn .count { font-size: 11px; color: var(--muted); background: #222; padding: 2px 7px; border-radius: 20px; }
-  .country-btn .arrow { width: 14px; height: 14px; fill: var(--muted); transition: transform 0.25s; flex-shrink: 0; }
-  .country-btn.open .arrow { transform: rotate(180deg); }
-
-  .channels-list { display: none; background: #0d0d0d; }
-  .channels-list.open { display: block; }
-
-  .channel-item {
-    padding: 8px 14px 8px 36px;
-    cursor: pointer;
-    font-size: 13px;
-    color: var(--muted);
-    transition: background 0.15s, color 0.15s;
-    border-left: 2px solid transparent;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Rajdhani', sans-serif;
-  }
-
-  .channel-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-  .channel-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(255,102,0,0.07); }
-  .channel-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
-  .channel-item.active .channel-dot { background: var(--accent); }
-
-  .tv-player-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: #000;
-    overflow: hidden;
-  }
-
-  .tv-player-wrap {
-    flex: 1;
-    position: relative;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 0;
-  }
-
-  #tv-video, .player-iframe-tv {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    border: none;
-  }
-
-  .tv-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    color: var(--muted);
-    height: 100%;
-    text-align: center;
-    padding: 24px;
-    font-family: 'Rajdhani', sans-serif;
-  }
-
-  .tv-empty h3 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--text); }
-
-  .tv-now-playing {
-    padding: 10px 18px;
-    background: #181818;
-    border-top: 1px solid var(--border);
-    display: none;
-    align-items: center;
-    gap: 10px;
-  }
-  .tv-now-playing.visible { display: flex; }
-  .now-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 1.5s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.7); } }
-  .now-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
-  .now-name { font-size: 14px; font-weight: 600; color: var(--text); font-family: 'Rajdhani', sans-serif; }
-
-  .tv-loading { padding: 28px 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; }
-  .spinner { width: 22px; height: 22px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .tv-menu-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: none;
-    padding: 6px;
-    margin-left: auto;
-  }
-  .tv-menu-btn span { display: block; width: 20px; height: 2px; background: var(--text); border-radius: 2px; margin: 4px 0; }
-
-  .tv-overlay {
-    display: none;
-    position: fixed;
-    inset: 56px 0 0 0;
-    background: rgba(0,0,0,0.65);
-    z-index: 199;
-  }
-  .tv-overlay.visible { display: block; }
-
-  /* ─── KARAOKE ─── */
-  #karaoke-screen .screen-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(ellipse at center, #110500 0%, #050505 70%);
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    text-align: center;
-  }
-
-  .karaoke-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 14px;
-    width: min(500px, 100%);
-  }
-
-  .karaoke-card {
-    background: #0f0f0f;
-    border: 1.5px solid var(--border);
-    border-radius: 12px;
-    padding: 22px 14px;
-    cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--text);
-  }
-
-  .karaoke-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--accent);
-    box-shadow: var(--glow);
-  }
-
-  .karaoke-card svg { width: 36px; height: 36px; stroke: var(--accent); stroke-width: 1.8; fill: none; }
-  .karaoke-card span { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1.5px; }
-
-  .karaoke-info {
-    font-size: 13px;
-    color: var(--muted);
-    max-width: 380px;
-    line-height: 1.6;
-    font-family: 'Rajdhani', sans-serif;
-  }
-
-  /* ─── MUSIC SCREEN ─── */
-  #music-screen .screen-body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(ellipse at center, #001a0d 0%, #050505 70%);
-    flex-direction: column;
-    gap: 20px;
-    padding: 24px;
-    text-align: center;
-  }
-
-  .music-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 14px;
-    width: min(500px, 100%);
-  }
-
-  .music-card {
-    background: #0f0f0f;
-    border: 1.5px solid rgba(29,185,84,0.25);
-    border-radius: 12px;
-    padding: 24px 14px;
-    cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: var(--text);
-  }
-
-  .music-card:hover {
-    transform: translateY(-4px);
-    border-color: #1db954;
-    box-shadow: 0 0 20px rgba(29,185,84,0.25);
-  }
-
-  .music-card svg { width: 36px; height: 36px; stroke: #1db954; stroke-width: 1.8; fill: none; }
-  .music-card span { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1.5px; }
-
-  .music-info {
-    font-size: 13px;
-    color: var(--muted);
-    max-width: 380px;
-    line-height: 1.6;
-    font-family: 'Rajdhani', sans-serif;
-  }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 600px) {
-    .tv-sidebar {
-      position: fixed;
-      left: 0;
-      top: 56px;
-      height: calc(100vh - 56px);
-      z-index: 200;
-      transform: translateX(-100%);
-      width: 80vw;
-      min-width: 0;
-      box-shadow: 4px 0 24px rgba(0,0,0,0.6);
-      transition: transform 0.3s ease;
-    }
-    .tv-sidebar.open { transform: translateX(0); }
-    .tv-menu-btn { display: block; }
-    .tv-player-area { width: 100%; }
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#050505;
+  --surface:#0f0f0f;
+  --surface2:#1a1a1a;
+  --border:rgba(255,102,0,0.25);
+  --accent:#ff6600;
+  --accent2:#ff9933;
+  --text:#f0f0f0;
+  --muted:#888;
+  --radius:14px;
+  --glow:0 0 20px rgba(255,102,0,0.35);
+}
+
+body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+body::before{
+  content:"";position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.5
+}
+
+/* ── HOME ── */
+#home-screen{
+  position:relative;z-index:1;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:28px 16px 40px
+}
+
+/* ── HERO / LOGO ── */
+.hero{text-align:center;margin-bottom:28px}
+
+.logo-wrap{
+  display:inline-flex;align-items:center;gap:14px;margin-bottom:8px
+}
+
+.logo-img{
+  width:60px;height:52px;border-radius:10px;object-fit:contain;
+  filter:drop-shadow(0 0 12px rgba(255,102,0,0.7));
+  animation:logoPulse 3s ease-in-out infinite
+}
+
+@keyframes logoPulse{
+  0%,100%{filter:drop-shadow(0 0 10px rgba(255,102,0,0.5))}
+  50%{filter:drop-shadow(0 0 24px rgba(255,102,0,1))}
+}
+
+.logo-text{
+  font-family:'Bebas Neue',sans-serif;font-size:44px;
+  letter-spacing:5px;color:var(--accent);line-height:1;
+  text-shadow:0 0 32px rgba(255,102,0,0.6)
+}
+
+.tagline{font-size:12px;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase}
+
+/* ── PREVIEW FRAME ── */
+.preview-frame{
+  position:relative;width:min(340px,90vw);margin-bottom:36px;cursor:pointer
+}
+.preview-inner{
+  position:relative;width:100%;padding-top:56.25%;
+  background:#0a0a0a;border-radius:16px;overflow:hidden;
+  border:1.5px solid var(--border);
+  box-shadow:var(--glow),inset 0 0 40px rgba(0,0,0,0.8)
+}
+.preview-content{
+  position:absolute;inset:0;display:flex;
+  align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center,#1a0a00 0%,#050505 70%)
+}
+.ornament{
+  position:absolute;inset:0;opacity:0.15;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cpath d='M100 10 C60 10 20 40 20 80 C20 120 60 150 100 150 C140 150 180 120 180 80 C180 40 140 10 100 10 Z' stroke='%23ff6600' fill='none' stroke-width='1.5'/%3E%3Cpath d='M100 30 C70 30 40 55 40 80 C40 105 70 130 100 130 C130 130 160 105 160 80 C160 55 130 30 100 30 Z' stroke='%23ff6600' fill='none' stroke-width='1'/%3E%3Ccircle cx='100' cy='80' r='25' stroke='%23ff6600' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size:cover
+}
+.play-btn{
+  position:relative;z-index:2;width:68px;height:68px;
+  background:var(--accent);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 32px rgba(255,102,0,0.8),0 0 64px rgba(255,102,0,0.3);
+  animation:playPulse 2s ease-in-out infinite;transition:transform 0.2s
+}
+.play-btn:hover{transform:scale(1.12)}
+@keyframes playPulse{
+  0%,100%{box-shadow:0 0 20px rgba(255,102,0,0.6),0 0 40px rgba(255,102,0,0.2)}
+  50%{box-shadow:0 0 44px rgba(255,102,0,1),0 0 88px rgba(255,102,0,0.4)}
+}
+.play-btn svg{width:28px;height:28px;fill:#000;margin-left:4px}
+.preview-frame::before,.preview-frame::after{
+  content:"";position:absolute;width:22px;height:22px;
+  border-color:var(--accent);border-style:solid;z-index:3
+}
+.preview-frame::before{top:-4px;left:-4px;border-width:2px 0 0 2px;border-radius:4px 0 0 0}
+.preview-frame::after{bottom:-4px;right:-4px;border-width:0 2px 2px 0;border-radius:0 0 4px 0}
+
+/* ── MENU GRID ── */
+.menu-grid{width:min(500px,100%);display:flex;flex-direction:column;gap:12px}
+
+.menu-btn{
+  display:flex;align-items:center;
+  background:linear-gradient(135deg,#111 0%,#0d0d0d 100%);
+  border:1.5px solid var(--border);border-radius:var(--radius);
+  cursor:pointer;text-decoration:none;color:var(--text);
+  overflow:hidden;position:relative;
+  transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;
+  animation:slideIn 0.5s ease-out both
+}
+.menu-btn:nth-child(1){animation-delay:0.05s}
+.menu-btn:nth-child(2){animation-delay:0.10s}
+.menu-btn:nth-child(3){animation-delay:0.15s}
+.menu-btn:nth-child(4){animation-delay:0.20s}
+.menu-btn:nth-child(5){animation-delay:0.25s}
+@keyframes slideIn{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:translateX(0)}}
+.menu-btn::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(255,102,0,0.05) 0%,transparent 60%);
+  opacity:0;transition:opacity 0.25s
+}
+.menu-btn:hover{border-color:var(--accent);box-shadow:var(--glow);transform:translateX(4px)}
+.menu-btn:hover::before{opacity:1}
+.menu-btn::after{
+  content:"";position:absolute;left:0;top:16px;bottom:16px;
+  width:3px;background:var(--accent);border-radius:0 3px 3px 0;
+  opacity:0;transition:opacity 0.2s
+}
+.menu-btn:hover::after{opacity:1}
+
+.btn-icon-wrap{
+  width:72px;height:72px;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;
+  border-right:1.5px solid var(--border);background:rgba(255,102,0,0.06)
+}
+.btn-icon-wrap svg{
+  width:32px;height:32px;stroke:var(--accent);stroke-width:1.8;
+  fill:none;stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 0 6px rgba(255,102,0,0.4))
+}
+.btn-label{
+  flex:1;padding:0 18px;
+  font-family:'Bebas Neue',sans-serif;font-size:22px;
+  letter-spacing:2px;color:var(--text)
+}
+.btn-arrow{width:50px;height:72px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.btn-arrow svg{
+  width:22px;height:22px;stroke:var(--accent);stroke-width:2.5;
+  fill:none;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s
+}
+.menu-btn:hover .btn-arrow svg{transform:translateX(4px)}
+
+/* ── APP SCREENS ── */
+.app-screen{
+  display:none;position:fixed;inset:0;z-index:100;
+  background:var(--bg);flex-direction:column
+}
+.app-screen.active{display:flex}
+
+.screen-header{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;background:rgba(15,15,15,0.96);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--border);
+  height:56px;flex-shrink:0
+}
+.back-btn{
+  background:none;border:none;cursor:pointer;display:flex;
+  align-items:center;gap:8px;color:var(--accent);
+  font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;
+  padding:6px 10px;border-radius:8px;transition:background 0.15s
+}
+.back-btn:hover{background:rgba(255,102,0,0.1)}
+.back-btn svg{width:20px;height:20px;stroke:var(--accent);stroke-width:2.5;fill:none;stroke-linecap:round}
+.screen-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--text)}
+.screen-body{flex:1;overflow:hidden;position:relative}
+.screen-body iframe{width:100%;height:100%;border:none;display:block}
+
+/* ── TV LAYOUT ── */
+#tv-screen .screen-body{display:flex;height:calc(100vh - 56px)}
+.tv-sidebar{
+  width:280px;min-width:280px;background:#181818;
+  border-right:1px solid var(--border);overflow-y:auto;overflow-x:hidden;
+  display:flex;flex-direction:column
+}
+.tv-sidebar::-webkit-scrollbar{width:4px}
+.tv-sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-header{
+  padding:12px 16px 8px;font-size:11px;font-weight:600;
+  letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;
+  border-bottom:1px solid var(--border);position:sticky;top:0;
+  background:#181818;z-index:10
+}
+.tv-search-wrap{
+  padding:10px 12px;border-bottom:1px solid var(--border);
+  position:sticky;top:32px;background:#181818;z-index:9
+}
+.tv-search-wrap input{
+  width:100%;padding:8px 12px;border-radius:20px;
+  border:1px solid var(--border);background:#111;
+  color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;outline:none
+}
+.tv-search-wrap input:focus{border-color:var(--accent)}
+.tv-search-wrap input::placeholder{color:var(--muted)}
+.country-group{border-bottom:1px solid var(--border)}
+.country-btn{
+  width:100%;display:flex;align-items:center;gap:8px;
+  padding:10px 14px;background:none;border:none;cursor:pointer;
+  color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;
+  font-weight:600;text-align:left;transition:background 0.15s
+}
+.country-btn:hover{background:rgba(255,255,255,0.04)}
+.country-btn .flag{font-size:16px}
+.country-btn .name{flex:1}
+.country-btn .count{font-size:11px;color:var(--muted);background:#222;padding:2px 7px;border-radius:20px}
+.country-btn .arrow{width:14px;height:14px;fill:var(--muted);transition:transform 0.25s;flex-shrink:0}
+.country-btn.open .arrow{transform:rotate(180deg)}
+.channels-list{display:none;background:#0d0d0d}
+.channels-list.open{display:block}
+.channel-item{
+  padding:8px 14px 8px 36px;cursor:pointer;font-size:13px;
+  color:var(--muted);transition:background 0.15s,color 0.15s;
+  border-left:2px solid transparent;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;display:flex;align-items:center;gap:8px;
+  font-family:'Rajdhani',sans-serif
+}
+.channel-item:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.channel-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(255,102,0,0.07)}
+.channel-dot{width:5px;height:5px;border-radius:50%;background:var(--border);flex-shrink:0}
+.channel-item.active .channel-dot{background:var(--accent)}
+.tv-player-area{flex:1;display:flex;flex-direction:column;background:#000;overflow:hidden}
+.tv-player-wrap{
+  flex:1;position:relative;background:#000;
+  display:flex;align-items:center;justify-content:center;min-height:0
+}
+#tv-video,.player-iframe-tv{width:100%;height:100%;object-fit:contain;display:block;border:none}
+.tv-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;color:var(--muted);height:100%;text-align:center;padding:24px;
+  font-family:'Rajdhani',sans-serif
+}
+.tv-empty h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--text)}
+.tv-now-playing{
+  padding:10px 18px;background:#181818;border-top:1px solid var(--border);
+  display:none;align-items:center;gap:10px
+}
+.tv-now-playing.visible{display:flex}
+.now-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+.now-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent)}
+.now-name{font-size:14px;font-weight:600;color:var(--text);font-family:'Rajdhani',sans-serif}
+.tv-loading{padding:28px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:12px}
+.spinner{width:22px;height:22px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tv-menu-btn{background:none;border:none;cursor:pointer;display:none;padding:6px;margin-left:auto}
+.tv-menu-btn span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;margin:4px 0}
+.tv-overlay{display:none;position:fixed;inset:56px 0 0 0;background:rgba(0,0,0,0.65);z-index:199}
+.tv-overlay.visible{display:block}
+
+/* ── PLATFORM GRID SCREEN ── */
+.platform-body{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;gap:20px;padding:24px;text-align:center;
+  overflow-y:auto
+}
+
+.platform-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:14px;width:min(560px,100%)
+}
+
+.platform-card{
+  background:#0f0f0f;border:1.5px solid var(--border);border-radius:14px;
+  padding:24px 14px;cursor:pointer;
+  transition:transform 0.2s,border-color 0.2s,box-shadow 0.2s;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  text-decoration:none;color:var(--text)
+}
+.platform-card:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:var(--glow)}
+.platform-card .icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.platform-card .icon svg{width:30px;height:30px;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.platform-card span{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1.5px}
+.platform-card .sub{font-size:11px;color:var(--muted);letter-spacing:0.05em;font-family:'Rajdhani',sans-serif}
+
+/* colores por plataforma */
+.c-yt .icon{background:rgba(255,0,0,0.1)} .c-yt .icon svg{stroke:#ff0000}
+.c-yt:hover{border-color:#ff0000;box-shadow:0 0 20px rgba(255,0,0,0.3)}
+.c-sp .icon{background:rgba(30,185,84,0.1)} .c-sp .icon svg{stroke:#1db954}
+.c-sp:hover{border-color:#1db954;box-shadow:0 0 20px rgba(30,185,84,0.3)}
+.c-dz .icon{background:rgba(100,100,255,0.1)} .c-dz .icon svg{stroke:#9999ff}
+.c-dz:hover{border-color:#9999ff;box-shadow:0 0 20px rgba(153,153,255,0.3)}
+.c-sc .icon{background:rgba(255,85,0,0.1)} .c-sc .icon svg{stroke:#ff5500}
+.c-sc:hover{border-color:#ff5500;box-shadow:0 0 20px rgba(255,85,0,0.3)}
+.c-tw .icon{background:rgba(29,161,242,0.1)} .c-tw .icon svg{stroke:#1da1f2}
+.c-tw:hover{border-color:#1da1f2;box-shadow:0 0 20px rgba(29,161,242,0.3)}
+.c-pm .icon{background:rgba(255,102,0,0.1)} .c-pm .icon svg{stroke:var(--accent)}
+.c-kr .icon{background:rgba(255,200,0,0.1)} .c-kr .icon svg{stroke:#ffcc00}
+.c-kr:hover{border-color:#ffcc00;box-shadow:0 0 20px rgba(255,200,0,0.3)}
+.c-fb .icon{background:rgba(0,120,255,0.1)} .c-fb .icon svg{stroke:#0078ff}
+.c-fb:hover{border-color:#0078ff;box-shadow:0 0 20px rgba(0,120,255,0.3)}
+.c-vimeo .icon{background:rgba(26,183,234,0.1)} .c-vimeo .icon svg{stroke:#1ab7ea}
+.c-vimeo:hover{border-color:#1ab7ea;box-shadow:0 0 20px rgba(26,183,234,0.3)}
+.c-ted .icon{background:rgba(230,43,30,0.1)} .c-ted .icon svg{stroke:#e62b1e}
+.c-ted:hover{border-color:#e62b1e;box-shadow:0 0 20px rgba(230,43,30,0.3)}
+
+.section-title{
+  font-family:'Bebas Neue',sans-serif;font-size:28px;
+  letter-spacing:3px;color:var(--text);margin-bottom:4px
+}
+.section-sub{font-size:13px;color:var(--muted);max-width:400px;line-height:1.5;font-family:'Rajdhani',sans-serif;margin-bottom:8px}
+
+/* ── EMBED SCREEN ── */
+#embed-screen .screen-body iframe{width:100%;height:100%;border:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .tv-sidebar{
+    position:fixed;left:0;top:56px;height:calc(100vh - 56px);
+    z-index:200;transform:translateX(-100%);width:82vw;min-width:0;
+    box-shadow:4px 0 24px rgba(0,0,0,0.6);transition:transform 0.3s ease
+  }
+  .tv-sidebar.open{transform:translateX(0)}
+  .tv-menu-btn{display:block}
+  .tv-player-area{width:100%}
+}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════ HOME SCREEN ══════════════════════ -->
-<div id="home-screen">
+<!-- ═══════════════ HOME ═══════════════ -->
+<div id="home-screen" style="display:flex">
   <div class="hero">
     <div class="logo-wrap">
-      <!-- Simple TV icon as logo -->
-      <svg class="logo-icon" viewBox="0 0 56 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="2" y="8" width="52" height="32" rx="4" fill="#ff6600" opacity="0.15" stroke="#ff6600" stroke-width="2"/>
-        <polygon points="22,18 22,30 36,24" fill="#ff6600"/>
-        <rect x="18" y="40" width="20" height="4" rx="2" fill="#ff6600" opacity="0.6"/>
-      </svg>
+      <!-- Logo base64 original del usuario -->
+      <img class="logo-img" src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAARC AFEA ckDASIAAhEBAxEB/8QAHQAAAgEFAQEAAAAAAAAAAAAABwgGAAECBAUDCf/EAGAQAAECBAIDBQIGBgUNDQcDAwUBAgMEBQYRBxIhEjETBBQiMnGBFSNCUUGhobEWJFJi0RczNHJzZIKEk5Sys8EJGCUnNUNjZIOS0uHiN0VTVKKjwkRV8ChllSY2OEak" alt="SHOW TV Logo">
       <span class="logo-text">SHOW TV</span>
     </div>
     <p class="tagline">Tu entretenimiento todo en uno</p>
   </div>
 
-  <!-- VIDEO PREVIEW -->
+  <!-- Preview -->
   <div class="preview-frame" onclick="goTo('tv-screen')">
     <div class="preview-inner">
       <div class="preview-content">
@@ -720,98 +357,55 @@
     </div>
   </div>
 
-  <!-- MENU OPTIONS -->
+  <!-- MENU -->
   <div class="menu-grid">
-
-    <!-- INTERNET / VIDEOS -->
-    <a class="menu-btn" onclick="openInternet()">
+    <a class="menu-btn" onclick="goTo('internet-screen')">
       <div class="btn-icon-wrap">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       </div>
       <span class="btn-label">INTERNET · VIDEOS</span>
-      <div class="btn-arrow">
-        <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
-      </div>
+      <div class="btn-arrow"><svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg></div>
     </a>
 
-    <!-- PELICULAS Y SERIES -->
-    <a class="menu-btn" onclick="openMovies()">
+    <a class="menu-btn" onclick="goTo('movies-screen')">
       <div class="btn-icon-wrap">
-        <svg viewBox="0 0 24 24">
-          <rect x="2" y="2" width="20" height="20" rx="2.18"/>
-          <line x1="7" y1="2" x2="7" y2="22"/>
-          <line x1="17" y1="2" x2="17" y2="22"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
-          <line x1="2" y1="7" x2="7" y2="7"/>
-          <line x1="17" y1="7" x2="22" y2="7"/>
-          <line x1="17" y1="17" x2="22" y2="17"/>
-          <line x1="2" y1="17" x2="7" y2="17"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="2" y1="17" x2="7" y2="17"/></svg>
       </div>
       <span class="btn-label">PELICULAS Y SERIES</span>
-      <div class="btn-arrow">
-        <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
-      </div>
+      <div class="btn-arrow"><svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg></div>
     </a>
 
-    <!-- TV EN VIVO -->
     <a class="menu-btn" onclick="goTo('tv-screen')">
       <div class="btn-icon-wrap">
-        <svg viewBox="0 0 24 24">
-          <rect x="2" y="7" width="20" height="15" rx="2"/>
-          <polyline points="17,2 12,7 7,2"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17,2 12,7 7,2"/></svg>
       </div>
       <span class="btn-label">TV EN VIVO</span>
-      <div class="btn-arrow">
-        <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
-      </div>
+      <div class="btn-arrow"><svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg></div>
     </a>
 
-    <!-- MUSICA -->
     <a class="menu-btn" onclick="goTo('music-screen')">
       <div class="btn-icon-wrap">
-        <svg viewBox="0 0 24 24">
-          <path d="M9 18V5l12-2v13"/>
-          <circle cx="6" cy="18" r="3"/>
-          <circle cx="18" cy="16" r="3"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       </div>
       <span class="btn-label">MUSICA</span>
-      <div class="btn-arrow">
-        <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
-      </div>
+      <div class="btn-arrow"><svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg></div>
     </a>
 
-    <!-- KARAOKE -->
     <a class="menu-btn" onclick="goTo('karaoke-screen')">
       <div class="btn-icon-wrap">
-        <svg viewBox="0 0 24 24">
-          <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-          <line x1="12" y1="19" x2="12" y2="22"/>
-          <line x1="8" y1="22" x2="16" y2="22"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
       </div>
       <span class="btn-label">KARAOKE</span>
-      <div class="btn-arrow">
-        <svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg>
-      </div>
+      <div class="btn-arrow"><svg viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></svg></div>
     </a>
-
   </div>
 </div>
 
-<!-- ══════════════════════ TV EN VIVO SCREEN ══════════════════════ -->
+<!-- ═══════════════ TV EN VIVO ═══════════════ -->
 <div id="tv-screen" class="app-screen">
   <div class="screen-header">
     <button class="back-btn" onclick="goHome()">
-      <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>
-      Inicio
+      <svg viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></svg>Inicio
     </button>
     <span class="screen-title">TV EN VIVO</span>
     <button class="tv-menu-btn" id="tvMenuBtn"><span></span><span></span><span></span></button>
@@ -830,12 +424,9 @@
     <main class="tv-player-area">
       <div class="tv-player-wrap" id="tvPlayerContainer">
         <div class="tv-empty">
-          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#ff6600" stroke-width="1.5">
-            <rect x="2" y="7" width="20" height="15" rx="2"/>
-            <polyline points="17,2 12,7 7,2"/>
-          </svg>
+          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#ff6600" stroke-width="1.5"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17,2 12,7 7,2"/></svg>
           <h3>SELECCIONA UN CANAL</h3>
-          <p style="font-size:13px;color:#666;">Elige un canal de la lista para ver en vivo.</p>
+          <p style="font-size:13px;color:#666">Elige un canal de la lista para ver en vivo.</p>
         </div>
       </div>
       <div class="tv-now-playing" id="tvNowPlaying">
@@ -847,218 +438,358 @@
   </div>
 </div>
 
-<!-- ══════════════════════ INTERNET / YOUTUBE SCREEN ══════════════════════ -->
+<!-- ═══════════════ INTERNET / VIDEOS ═══════════════ -->
 <div id="internet-screen" class="app-screen">
   <div class="screen-header">
-    <button class="back-btn" onclick="goHome()">
-      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round;"><polyline points="15,18 9,12 15,6"/></svg>
-      Inicio
-    </button>
+    <button class="back-btn" onclick="goHome()"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round"><polyline points="15,18 9,12 15,6"/></svg>Inicio</button>
     <span class="screen-title">INTERNET · VIDEOS</span>
   </div>
-  <div class="screen-body">
-    <iframe src="https://www.youtube.com" allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"></iframe>
+  <div class="screen-body" style="overflow-y:auto">
+    <div class="platform-body" style="background:radial-gradient(ellipse at center,#0a0500 0%,#050505 70%)">
+      <div class="section-title">🌐 INTERNET Y VIDEOS</div>
+      <p class="section-sub">Accede a tus plataformas favoritas de video directamente</p>
+      <div class="platform-grid">
+
+        <a class="platform-card c-yt" onclick="openEmbed('https://m.youtube.com','YOUTUBE','internet-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02"/></svg>
+          </div>
+          <span>YOUTUBE</span>
+          <div class="sub">Videos gratis</div>
+        </a>
+
+        <a class="platform-card c-fb" onclick="openEmbed('https://m.facebook.com/watch','FACEBOOK WATCH','internet-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </div>
+          <span>FB WATCH</span>
+          <div class="sub">Videos Facebook</div>
+        </a>
+
+        <a class="platform-card c-vimeo" onclick="openEmbed('https://vimeo.com','VIMEO','internet-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M22 7s-.2 4.2-3 7.3c-2.9 3.2-6.3 3.4-7.7 3.4-3.2 0-5.4-2.1-5.4-2.1L7 21H3l1.2-9.1S1 10.5 1 7.8C1 5.4 2.9 3 6.1 3c2.5 0 3.9 1.9 3.9 4.2 0 3.6-2.4 4.5-2.4 4.5s.7 2.4 4.4 2.4c2.7 0 7-3 7-7.1H22z"/></svg>
+          </div>
+          <span>VIMEO</span>
+          <div class="sub">Videos arte</div>
+        </a>
+
+        <a class="platform-card c-tw" onclick="openEmbed('https://twitch.tv','TWITCH','internet-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M21 2H3v16h5v4l4-4h5l4-4V2zm-10 9V7m5 4V7"/></svg>
+          </div>
+          <span>TWITCH</span>
+          <div class="sub">Streaming en vivo</div>
+        </a>
+
+        <a class="platform-card c-ted" onclick="openEmbed('https://www.ted.com','TED TALKS','internet-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <span>TED TALKS</span>
+          <div class="sub">Charlas inspiradoras</div>
+        </a>
+
+        <a class="platform-card c-sc" onclick="openEmbed('https://soundcloud.com','SOUNDCLOUD','internet-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <span>SOUNDCLOUD</span>
+          <div class="sub">Música indie</div>
+        </a>
+
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ══════════════════════ PELICULAS / SERIES SCREEN ══════════════════════ -->
+<!-- ═══════════════ PELICULAS Y SERIES ═══════════════ -->
 <div id="movies-screen" class="app-screen">
   <div class="screen-header">
-    <button class="back-btn" onclick="goHome()">
-      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round;"><polyline points="15,18 9,12 15,6"/></svg>
-      Inicio
-    </button>
+    <button class="back-btn" onclick="goHome()"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round"><polyline points="15,18 9,12 15,6"/></svg>Inicio</button>
     <span class="screen-title">PELICULAS Y SERIES</span>
   </div>
-  <div class="screen-body">
-    <iframe src="https://www.youtube.com/results?search_query=peliculas+completas+gratis+en+espanol" allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"></iframe>
+  <div class="screen-body" style="overflow-y:auto">
+    <div class="platform-body" style="background:radial-gradient(ellipse at center,#080010 0%,#050505 70%)">
+      <div class="section-title">🎬 PELICULAS Y SERIES</div>
+      <p class="section-sub">Películas y series gratis en línea — sin costo</p>
+      <div class="platform-grid">
+
+        <a class="platform-card c-yt" onclick="openEmbed('https://www.youtube.com/results?search_query=peliculas+completas+gratis+en+español+2024','PELÍCULAS YT','movies-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75,15.02 15.5,12 9.75,8.98 9.75,15.02"/></svg>
+          </div>
+          <span>PELÍCULAS</span>
+          <div class="sub">Gratis en YouTube</div>
+        </a>
+
+        <a class="platform-card c-yt" onclick="openEmbed('https://www.youtube.com/results?search_query=series+completas+gratis+español+2024','SERIES YT','movies-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+          </div>
+          <span>SERIES</span>
+          <div class="sub">Gratis en YouTube</div>
+        </a>
+
+        <a class="platform-card c-ted" onclick="openEmbed('https://www.youtube.com/results?search_query=documentales+completos+en+español+2024','DOCUMENTALES','movies-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <span>DOCU</span>
+          <div class="sub">Documentales gratis</div>
+        </a>
+
+        <a class="platform-card c-fb" onclick="openEmbed('https://www.youtube.com/results?search_query=anime+completo+en+español+gratis','ANIME','movies-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span>ANIME</span>
+          <div class="sub">Gratis en YouTube</div>
+        </a>
+
+        <a class="platform-card c-tw" onclick="openEmbed('https://www.youtube.com/results?search_query=novelas+completas+gratis+español','NOVELAS','movies-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <span>NOVELAS</span>
+          <div class="sub">Telenovelas gratis</div>
+        </a>
+
+        <a class="platform-card c-vimeo" onclick="openEmbed('https://archive.org/details/movies','ARCHIVE.ORG','movies-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <span>ARCHIVE</span>
+          <div class="sub">Clásicos gratis</div>
+        </a>
+
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ══════════════════════ MUSICA SCREEN ══════════════════════ -->
+<!-- ═══════════════ MUSICA ═══════════════ -->
 <div id="music-screen" class="app-screen">
   <div class="screen-header">
-    <button class="back-btn" onclick="goHome()">
-      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round;"><polyline points="15,18 9,12 15,6"/></svg>
-      Inicio
-    </button>
+    <button class="back-btn" onclick="goHome()"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round"><polyline points="15,18 9,12 15,6"/></svg>Inicio</button>
     <span class="screen-title">MUSICA</span>
   </div>
-  <div class="screen-body">
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:22px;padding:24px;text-align:center;background:radial-gradient(ellipse at center,#001a0d 0%,#050505 70%);">
-      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#1db954" stroke-width="1.5" stroke-linecap="round">
-        <path d="M9 18V5l12-2v13"/>
-        <circle cx="6" cy="18" r="3"/>
-        <circle cx="18" cy="16" r="3"/>
-      </svg>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#f0f0f0;">ELIGE TU PLATAFORMA</h2>
-      <p class="music-info">Accede a tu música favorita desde estas plataformas</p>
-      <div class="music-grid">
-        <a class="music-card" href="#" onclick="openMusicPlatform('https://open.spotify.com','music')">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 13.5c2.5-1 5-1 8 0M7 10c3-1.2 6-1.2 10 0M9 16.5c2-0.8 4-0.8 6 0"/></svg>
+  <div class="screen-body" style="overflow-y:auto">
+    <div class="platform-body" style="background:radial-gradient(ellipse at center,#001a0d 0%,#050505 70%)">
+      <div class="section-title">🎵 MÚSICA</div>
+      <p class="section-sub">Escucha música gratis en tus plataformas favoritas</p>
+      <div class="platform-grid">
+
+        <a class="platform-card c-sp" onclick="openEmbed('https://open.spotify.com','SPOTIFY','music-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 13.5c2.5-1 5-1 8 0M7 10c3-1.2 6-1.2 10 0M9 16.5c2-.8 4-.8 6 0"/></svg>
+          </div>
           <span>SPOTIFY</span>
+          <div class="sub">Millones de canciones</div>
         </a>
-        <a class="music-card" href="#" onclick="openMusicPlatform('https://music.youtube.com','music')">
-          <svg viewBox="0 0 24 24"><path d="M21 15V6"/><path d="M18.5 18a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/><path d="M12 12H3"/><path d="M16 6H3"/><path d="M12 18H3"/></svg>
+
+        <a class="platform-card c-yt" onclick="openEmbed('https://music.youtube.com','YT MUSIC','music-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
           <span>YT MUSIC</span>
+          <div class="sub">YouTube Music</div>
         </a>
-        <a class="music-card" href="#" onclick="openMusicPlatform('https://www.deezer.com','music')">
-          <svg viewBox="0 0 24 24"><rect x="2" y="11" width="3" height="6" rx="1"/><rect x="7" y="8" width="3" height="9" rx="1"/><rect x="12" y="5" width="3" height="12" rx="1"/><rect x="17" y="2" width="3" height="15" rx="1"/></svg>
+
+        <a class="platform-card c-dz" onclick="openEmbed('https://www.deezer.com','DEEZER','music-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="11" width="3" height="6" rx="1"/><rect x="7" y="8" width="3" height="9" rx="1"/><rect x="12" y="5" width="3" height="12" rx="1"/><rect x="17" y="2" width="3" height="15" rx="1"/></svg>
+          </div>
           <span>DEEZER</span>
+          <div class="sub">Música streaming</div>
         </a>
-        <a class="music-card" href="#" onclick="openMusicPlatform('https://www.youtube.com/results?search_query=musica+en+vivo','music')">
-          <svg viewBox="0 0 24 24"><polygon points="23,7 16,12 23,17"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-          <span>VIDEOS</span>
+
+        <a class="platform-card c-sc" onclick="openEmbed('https://soundcloud.com','SOUNDCLOUD','music-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
+          <span>SOUNDCLOUD</span>
+          <div class="sub">Artistas indie</div>
         </a>
+
+        <a class="platform-card c-yt" onclick="openEmbed('https://www.youtube.com/results?search_query=musica+en+vivo+conciertos+2024','CONCIERTOS','music-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><polygon points="23,7 16,12 23,17"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <span>CONCIERTOS</span>
+          <div class="sub">En vivo gratis</div>
+        </a>
+
+        <a class="platform-card c-tw" onclick="openEmbed('https://www.youtube.com/results?search_query=radio+en+linea+gratis+español','RADIO','music-screen')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+          </div>
+          <span>RADIO</span>
+          <div class="sub">Radio online gratis</div>
+        </a>
+
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════ KARAOKE SCREEN ══════════════════════ -->
+<!-- ═══════════════ KARAOKE ═══════════════ -->
 <div id="karaoke-screen" class="app-screen">
   <div class="screen-header">
-    <button class="back-btn" onclick="goHome()">
-      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round;"><polyline points="15,18 9,12 15,6"/></svg>
-      Inicio
-    </button>
+    <button class="back-btn" onclick="goHome()"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round"><polyline points="15,18 9,12 15,6"/></svg>Inicio</button>
     <span class="screen-title">KARAOKE</span>
   </div>
-  <div class="screen-body">
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:22px;padding:24px;text-align:center;background:radial-gradient(ellipse at center,#110500 0%,#050505 70%);">
-      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ff6600" stroke-width="1.5" stroke-linecap="round">
-        <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/>
-        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-        <line x1="12" y1="19" x2="12" y2="22"/>
-        <line x1="8" y1="22" x2="16" y2="22"/>
-      </svg>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#f0f0f0;">¡A CANTAR!</h2>
-      <p class="karaoke-info">Busca tus canciones favoritas para karaoke directamente en YouTube</p>
-      <div class="karaoke-grid">
-        <a class="karaoke-card" href="#" onclick="openKaraoke('karaoke en español')">
-          <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+  <div class="screen-body" style="overflow-y:auto">
+    <div class="platform-body" style="background:radial-gradient(ellipse at center,#110500 0%,#050505 70%)">
+      <div class="section-title">🎤 KARAOKE</div>
+      <p class="section-sub">¡A cantar! Busca tus canciones favoritas</p>
+      <div class="platform-grid">
+
+        <a class="platform-card c-kr" onclick="openKaraokeSearch('karaoke en español con letra')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+          </div>
           <span>ESPAÑOL</span>
+          <div class="sub">Con letra</div>
         </a>
-        <a class="karaoke-card" href="#" onclick="openKaraoke('karaoke pop en español')">
-          <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+
+        <a class="platform-card c-kr" onclick="openKaraokeSearch('karaoke pop en español 2024')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          </div>
           <span>POP</span>
+          <div class="sub">Pop en español</div>
         </a>
-        <a class="karaoke-card" href="#" onclick="openKaraoke('karaoke rancheras mexicanas')">
-          <svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+
+        <a class="platform-card c-kr" onclick="openKaraokeSearch('karaoke rancheras mexicanas 2024')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+          </div>
           <span>RANCHERAS</span>
+          <div class="sub">Música mexicana</div>
         </a>
-        <a class="karaoke-card" href="#" onclick="openKaraoke('karaoke baladas romanticas')">
-          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+
+        <a class="platform-card c-kr" onclick="openKaraokeSearch('karaoke baladas romanticas español')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
           <span>BALADAS</span>
+          <div class="sub">Románticas</div>
         </a>
-        <a class="karaoke-card" href="#" onclick="openKaraoke('karaoke cumbia salsa')">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+
+        <a class="platform-card c-kr" onclick="openKaraokeSearch('karaoke cumbia salsa tropical')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
           <span>CUMBIA</span>
+          <div class="sub">Tropical</div>
         </a>
-        <a class="karaoke-card" href="#" onclick="openKaraokeSearch()">
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+
+        <a class="platform-card c-kr" onclick="buscarKaraoke()">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
           <span>BUSCAR</span>
+          <div class="sub">Tu canción</div>
         </a>
+
+        <a class="platform-card c-kr" onclick="openKaraokeSearch('karaoke ingles top 2024')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          </div>
+          <span>INGLÉS</span>
+          <div class="sub">Top 2024</div>
+        </a>
+
+        <a class="platform-card c-kr" onclick="openKaraokeSearch('karaoke reggaeton urbano 2024')">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="11" width="3" height="6" rx="1"/><rect x="7" y="8" width="3" height="9" rx="1"/><rect x="12" y="5" width="3" height="12" rx="1"/><rect x="17" y="2" width="3" height="15" rx="1"/></svg>
+          </div>
+          <span>REGGAETON</span>
+          <div class="sub">Urbano</div>
+        </a>
+
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════ MUSIC/KARAOKE EMBED SCREEN ══════════════════════ -->
+<!-- ═══════════════ EMBED SCREEN ═══════════════ -->
 <div id="embed-screen" class="app-screen">
   <div class="screen-header">
-    <button class="back-btn" id="embedBack" onclick="goHome()">
-      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round;"><polyline points="15,18 9,12 15,6"/></svg>
-      Atrás
+    <button class="back-btn" id="embedBackBtn">
+      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:#ff6600;stroke-width:2.5;fill:none;stroke-linecap:round"><polyline points="15,18 9,12 15,6"/></svg>Atrás
     </button>
     <span class="screen-title" id="embedTitle">—</span>
   </div>
   <div class="screen-body">
-    <iframe id="embedFrame" src="" allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"></iframe>
+    <iframe id="embedFrame" src="" allow="autoplay; fullscreen; encrypted-media" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation allow-top-navigation"></iframe>
   </div>
 </div>
 
 <script>
-// ─── NAVIGATION ───
-const screens = ['home-screen','tv-screen','internet-screen','movies-screen','music-screen','karaoke-screen','embed-screen'];
+// ──────────── NAVIGATION ────────────
+const screens=['home-screen','tv-screen','internet-screen','movies-screen','music-screen','karaoke-screen','embed-screen'];
 
-function goTo(id) {
-  screens.forEach(s => {
-    const el = document.getElementById(s);
+function goTo(id){
+  screens.forEach(s=>{
+    const el=document.getElementById(s);
     el.classList.remove('active');
-    el.style.display = '';
+    el.style.display='';
   });
-  const target = document.getElementById(id);
-  target.classList.add('active');
-  target.style.display = 'flex';
-
-  if (id === 'tv-screen' && !tvLoaded) {
-    loadTVChannels();
-    tvLoaded = true;
-  }
+  const t=document.getElementById(id);
+  t.classList.add('active');
+  t.style.display='flex';
+  if(id==='tv-screen'&&!tvLoaded){loadTVChannels();tvLoaded=true;}
 }
 
-function goHome() {
-  screens.forEach(s => {
+function goHome(){
+  screens.forEach(s=>{
     document.getElementById(s).classList.remove('active');
-    document.getElementById(s).style.display = '';
+    document.getElementById(s).style.display='';
   });
-  document.getElementById('home-screen').style.display = 'flex';
+  document.getElementById('home-screen').style.display='flex';
+  // limpiar iframe
+  document.getElementById('embedFrame').src='';
 }
 
-function openInternet() {
-  goTo('internet-screen');
-}
+// Init
+document.getElementById('home-screen').style.display='flex';
 
-function openMovies() {
-  goTo('movies-screen');
-}
-
-function openMusicPlatform(url, backScreen) {
-  document.getElementById('embedTitle').textContent = 'MUSICA';
-  document.getElementById('embedFrame').src = url;
-  document.getElementById('embedBack').onclick = () => goTo('music-screen');
+// ──────────── EMBED OPENER ────────────
+function openEmbed(url,title,backScreen){
+  document.getElementById('embedTitle').textContent=title;
+  document.getElementById('embedFrame').src=url;
+  document.getElementById('embedBackBtn').onclick=()=>goTo(backScreen);
   goTo('embed-screen');
 }
 
-function openKaraoke(query) {
-  const url = 'https://www.youtube.com/results?search_query=' + encodeURIComponent(query + ' karaoke con letra');
-  document.getElementById('embedTitle').textContent = 'KARAOKE';
-  document.getElementById('embedFrame').src = url;
-  document.getElementById('embedBack').onclick = () => goTo('karaoke-screen');
-  goTo('embed-screen');
+function openKaraokeSearch(query){
+  const url='https://www.youtube.com/results?search_query='+encodeURIComponent(query);
+  openEmbed(url,'KARAOKE','karaoke-screen');
 }
 
-function openKaraokeSearch() {
-  const q = prompt('🎤 ¿Qué canción quieres cantar?');
-  if (q) openKaraoke(q);
+function buscarKaraoke(){
+  const q=prompt('🎤 ¿Qué canción quieres cantar?');
+  if(q) openKaraokeSearch(q+' karaoke con letra');
 }
 
-// Init home
-document.getElementById('home-screen').style.display = 'flex';
+// ──────────── TV CHANNELS ────────────
+let tvLoaded=false;
+let tvChannelData={};
+let tvActiveItem=null;
 
-// ─── TV CHANNELS ───
-let tvLoaded = false;
-let tvChannelData = {};
-let tvActiveItem = null;
+const m3uUrl='https://iptv-org.github.io/iptv/index.country.m3u';
+const tvList=document.getElementById('tvChannelList');
+const tvSearch=document.getElementById('tvSearch');
+const tvMenuBtn=document.getElementById('tvMenuBtn');
+const tvSidebar=document.getElementById('tvSidebar');
+const tvOverlay=document.getElementById('tvOverlay');
 
-const m3uUrl = "https://iptv-org.github.io/iptv/index.country.m3u";
-const tvList = document.getElementById('tvChannelList');
-const tvSearch = document.getElementById('tvSearch');
-const tvMenuBtn = document.getElementById('tvMenuBtn');
-const tvSidebar = document.getElementById('tvSidebar');
-const tvOverlay = document.getElementById('tvOverlay');
+tvMenuBtn.addEventListener('click',()=>{tvSidebar.classList.toggle('open');tvOverlay.classList.toggle('visible');});
+tvOverlay.addEventListener('click',()=>{tvSidebar.classList.remove('open');tvOverlay.classList.remove('visible');});
 
-tvMenuBtn.addEventListener('click', () => {
-  tvSidebar.classList.toggle('open');
-  tvOverlay.classList.toggle('visible');
-});
-tvOverlay.addEventListener('click', () => {
-  tvSidebar.classList.remove('open');
-  tvOverlay.classList.remove('visible');
-});
-
-const flags = {
+const flags={
   "Mexico":"🇲🇽","México":"🇲🇽","United States":"🇺🇸","Colombia":"🇨🇴",
   "Argentina":"🇦🇷","Chile":"🇨🇱","Spain":"🇪🇸","España":"🇪🇸",
   "Brazil":"🇧🇷","Peru":"🇵🇪","Perú":"🇵🇪","Venezuela":"🇻🇪","Ecuador":"🇪🇨",
@@ -1072,7 +803,7 @@ const flags = {
   "Otros":"🌍","Other":"🌍"
 };
 
-const extraChannels = {
+const extraChannels={
   "México":[
     {name:"Azteca Uno (Web)",url:"https://www.tvazteca.com/aztecauno",type:"web"},
     {name:"Las Estrellas (Web)",url:"https://www.lasestrellas.tv/en-vivo",type:"web"},
@@ -1095,129 +826,93 @@ const extraChannels = {
   ]
 };
 
-async function loadTVChannels() {
-  try {
-    const res = await fetch(m3uUrl);
-    const text = await res.text();
-    const lines = text.split('\n');
-    tvChannelData = {};
-
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].startsWith('#EXTINF')) {
-        const info = lines[i];
-        const name = info.split(',')[1]?.trim();
-        const url = lines[i+1]?.trim();
-        if (!name || !url) continue;
-        const gm = info.match(/group-title="([^"]+)"/);
-        const country = gm ? gm[1] : 'Otros';
-        if (!tvChannelData[country]) tvChannelData[country] = [];
+async function loadTVChannels(){
+  try{
+    const res=await fetch(m3uUrl);
+    const text=await res.text();
+    const lines=text.split('\n');
+    tvChannelData={};
+    for(let i=0;i<lines.length;i++){
+      if(lines[i].startsWith('#EXTINF')){
+        const info=lines[i];
+        const name=info.split(',')[1]?.trim();
+        const url=lines[i+1]?.trim();
+        if(!name||!url) continue;
+        const gm=info.match(/group-title="([^"]+)"/);
+        const country=gm?gm[1]:'Otros';
+        if(!tvChannelData[country]) tvChannelData[country]=[];
         tvChannelData[country].push({name,url});
       }
     }
-
-    Object.keys(extraChannels).forEach(c => {
-      if (!tvChannelData[c]) tvChannelData[c] = [];
-      tvChannelData[c] = [...extraChannels[c], ...tvChannelData[c]];
+    Object.keys(extraChannels).forEach(c=>{
+      if(!tvChannelData[c]) tvChannelData[c]=[];
+      tvChannelData[c]=[...extraChannels[c],...tvChannelData[c]];
     });
-
     renderTV(tvChannelData);
-  } catch(e) {
-    tvList.innerHTML = '<div style="padding:20px;text-align:center;color:#666;font-size:13px;">Error cargando canales.</div>';
+  }catch(e){
+    tvList.innerHTML='<div style="padding:20px;text-align:center;color:#666;font-size:13px;">Error cargando canales.</div>';
   }
 }
 
-function renderTV(data) {
-  tvList.innerHTML = '';
-  const keys = Object.keys(data);
-  if (!keys.length) {
-    tvList.innerHTML = '<div style="padding:20px;text-align:center;color:#666;font-size:13px;">Sin resultados.</div>';
-    return;
-  }
-  keys.forEach(country => {
-    const grp = document.createElement('div');
-    grp.className = 'country-group';
-
-    const btn = document.createElement('button');
-    btn.className = 'country-btn';
-    btn.innerHTML = `
-      <span class="flag">${flags[country]||'📺'}</span>
-      <span class="name">${country}</span>
-      <span class="count">${data[country].length}</span>
-      <svg class="arrow" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    `;
-
-    const cList = document.createElement('div');
-    cList.className = 'channels-list';
-
-    data[country].forEach(ch => {
-      const item = document.createElement('div');
-      item.className = 'channel-item';
-      item.innerHTML = `<div class="channel-dot"></div><span>${ch.name}</span>`;
-      item.onclick = () => {
-        tvPlay(ch.url, ch.type||'stream', ch.name, item);
-        if (window.innerWidth <= 600) {
-          tvSidebar.classList.remove('open');
-          tvOverlay.classList.remove('visible');
-        }
+function renderTV(data){
+  tvList.innerHTML='';
+  const keys=Object.keys(data);
+  if(!keys.length){tvList.innerHTML='<div style="padding:20px;text-align:center;color:#666;font-size:13px;">Sin resultados.</div>';return;}
+  keys.forEach(country=>{
+    const grp=document.createElement('div');grp.className='country-group';
+    const btn=document.createElement('button');btn.className='country-btn';
+    btn.innerHTML=`<span class="flag">${flags[country]||'📺'}</span><span class="name">${country}</span><span class="count">${data[country].length}</span><svg class="arrow" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const cList=document.createElement('div');cList.className='channels-list';
+    data[country].forEach(ch=>{
+      const item=document.createElement('div');item.className='channel-item';
+      item.innerHTML=`<div class="channel-dot"></div><span>${ch.name}</span>`;
+      item.onclick=()=>{
+        tvPlay(ch.url,ch.type||'stream',ch.name,item);
+        if(window.innerWidth<=600){tvSidebar.classList.remove('open');tvOverlay.classList.remove('visible');}
       };
       cList.appendChild(item);
     });
-
-    btn.onclick = () => {
-      const open = cList.classList.contains('open');
-      document.querySelectorAll('.channels-list.open').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.country-btn.open').forEach(el => el.classList.remove('open'));
-      if (!open) { cList.classList.add('open'); btn.classList.add('open'); }
+    btn.onclick=()=>{
+      const open=cList.classList.contains('open');
+      document.querySelectorAll('.channels-list.open').forEach(el=>el.classList.remove('open'));
+      document.querySelectorAll('.country-btn.open').forEach(el=>el.classList.remove('open'));
+      if(!open){cList.classList.add('open');btn.classList.add('open');}
     };
-
-    grp.appendChild(btn);
-    grp.appendChild(cList);
-    tvList.appendChild(grp);
+    grp.appendChild(btn);grp.appendChild(cList);tvList.appendChild(grp);
   });
 }
 
-tvSearch.addEventListener('input', () => {
-  const q = tvSearch.value.toLowerCase().trim();
-  if (!q) { renderTV(tvChannelData); return; }
-  const f = {};
-  Object.keys(tvChannelData).forEach(c => {
-    const m = tvChannelData[c].filter(ch => ch.name.toLowerCase().includes(q) || c.toLowerCase().includes(q));
-    if (m.length) f[c] = m;
+tvSearch.addEventListener('input',()=>{
+  const q=tvSearch.value.toLowerCase().trim();
+  if(!q){renderTV(tvChannelData);return;}
+  const f={};
+  Object.keys(tvChannelData).forEach(c=>{
+    const m=tvChannelData[c].filter(ch=>ch.name.toLowerCase().includes(q)||c.toLowerCase().includes(q));
+    if(m.length) f[c]=m;
   });
   renderTV(f);
-  document.querySelectorAll('.channels-list').forEach(el => el.classList.add('open'));
-  document.querySelectorAll('.country-btn').forEach(el => el.classList.add('open'));
+  document.querySelectorAll('.channels-list').forEach(el=>el.classList.add('open'));
+  document.querySelectorAll('.country-btn').forEach(el=>el.classList.add('open'));
 });
 
-function tvPlay(url, type, name, itemEl) {
-  if (tvActiveItem) tvActiveItem.classList.remove('active');
-  tvActiveItem = itemEl;
-  itemEl.classList.add('active');
-
-  document.getElementById('tvNowName').textContent = name;
+function tvPlay(url,type,name,itemEl){
+  if(tvActiveItem) tvActiveItem.classList.remove('active');
+  tvActiveItem=itemEl;itemEl.classList.add('active');
+  document.getElementById('tvNowName').textContent=name;
   document.getElementById('tvNowPlaying').classList.add('visible');
-
-  const container = document.getElementById('tvPlayerContainer');
-
-  if (type === 'web') {
-    container.innerHTML = `<iframe class="player-iframe-tv" src="${url}" allowfullscreen></iframe>`;
+  const container=document.getElementById('tvPlayerContainer');
+  if(type==='web'){
+    container.innerHTML=`<iframe class="player-iframe-tv" src="${url}" allowfullscreen sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"></iframe>`;
     return;
   }
-
-  container.innerHTML = `<video id="tv-video" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;background:#000;"></video>`;
-  const video = document.getElementById('tv-video');
-
-  if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(url);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(()=>{}));
-  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-    video.src = url;
-    video.play().catch(()=>{});
-  } else {
-    video.src = url;
-  }
+  container.innerHTML=`<video id="tv-video" controls autoplay playsinline style="width:100%;height:100%;object-fit:contain;background:#000;"></video>`;
+  const video=document.getElementById('tv-video');
+  if(Hls.isSupported()){
+    const hls=new Hls();hls.loadSource(url);hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED,()=>video.play().catch(()=>{}));
+  }else if(video.canPlayType('application/vnd.apple.mpegurl')){
+    video.src=url;video.play().catch(()=>{});
+  }else{video.src=url;}
 }
 </script>
 </body>
